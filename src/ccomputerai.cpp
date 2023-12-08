@@ -1,30 +1,39 @@
+#include <climits>
 #include <cmath>
+#include "pd_api.h"
+#include "pd_helperfuncs.h"
 #include "ccomputerai.h"
 #include "common.h"
 #include "cbord.h"
 
-void PrintMoves(vector<vector<SMove> > List)
-{
-    vector<SMove> iter2;
-    size_t x,y;
-    printf("%llu\n",List.size());
-    for (y=0;y<List.size();y++)
-    {
-        for (x=0;x<List[y].size();x++)
-        {
-            printf("Move %llu (%d,%d) -> (%d,%d) KingX:%d KingY:%d\n",y,List[y][x].X,List[y][x].Y,List[y][x].NewX,List[y][x].NewY,List[y][x].KingX,List[y][x].KingY);
-        }
-    }
-}
+// void PrintMoves(vector<vector<SMove> > List)
+// {
+//     vector<SMove> iter2;
+//     size_t x,y;
+//     pd->system->logToConsole("%zu\n",List.size());
+//     for (y=0;y<List.size();y++)
+//     {
+//         for (x=0;x<List[y].size();x++)
+//         {
+//             pd->system->logToConsole("Move %zu (%d,%d) -> (%d,%d) KingX:%d KingY:%d\n",y,List[y][x].X,List[y][x].Y,List[y][x].NewX,List[y][x].NewY,List[y][x].KingX,List[y][x].KingY);
+//         }
+//     }
+// }
 
 ComputerAi::ComputerAi(int SearchDepthIn,bool JumpHeuristicEnabledIn)
 {
+	MinMaxiter = MinMaxMoves.end();
     SearchDepth=SearchDepthIn;
     JumpHeuristicEnabled = JumpHeuristicEnabledIn;
+	madeMove = true;
+	lastStatus = AiIdle;
 }
 
 ComputerAi::~ComputerAi()
 {
+	MinMaxiter = MinMaxMoves.end();
+	madeMove = true;
+	lastStatus = AiIdle;
 }
 
 float ComputerAi::Distance(int X1,int Y1,int X2,int Y2)
@@ -289,65 +298,81 @@ int ComputerAi::Min(CBord *Bord,int depth, int alpha, int beta)
 
 }
 
-vector<SMove> ComputerAi::MinMax(CBord *Bord,int depth,int Player)
+AiStatus ComputerAi::Update()
 {
-    FunctionCalls = 0;
-    vector<vector<SMove> >Moves;
-    int BestValue,Value;
-    vector<SMove> BestMove;
-    Moves = GenerateMovesList(Bord,Player);
-    if(Player == Human)
-        PrintMoves(Moves);
-    vector<vector<SMove> >::iterator iter = Moves.begin();
-    if(Player == Computer)
-        BestValue = INT_MIN;
-    else
-        BestValue = INT_MAX;
-    while (iter != Moves.end())
-    {
-        Bord->ApplyMoves(*iter,true,false,false);
+    if (lastStatus == AiCalculating)
+	{
+		if ((MinMaxiter != MinMaxMoves.end()))
+		{
+			MinMaxBord->ApplyMoves(*MinMaxiter,true,false,false);
 
-        if (Player==Computer)
-        {
-            Value = Min(Bord,depth,INT_MIN,INT_MAX);
-            Bord->UndoMoves(*iter,false);
-            if(Value > BestValue)
-            {
+			if (MinMaxPlayer==Computer)
+			{
+				MinMaxValue = Min(MinMaxBord,MinMaxdepth,INT_MIN,INT_MAX);
+				MinMaxBord->UndoMoves(*MinMaxiter,false);
+				if(MinMaxValue > MinMaxBestValue)
+				{
 
-                BestMove = *iter;
-                BestValue = Value;
+					MinMaxBestMove = *MinMaxiter;
+					MinMaxBestValue = MinMaxValue;
 
-            }
-        }
-        else
-        {
-            Value = Max(Bord,depth,INT_MIN,INT_MAX);
-            Bord->UndoMoves(*iter,false);
-            if(Value < BestValue)
-            {
-                BestMove = *iter;
-                BestValue = Value;
-            }
-        }
+				}
+			}
+			else
+			{
+				MinMaxValue = Max(MinMaxBord,MinMaxdepth,INT_MIN,INT_MAX);
+				MinMaxBord->UndoMoves(*MinMaxiter,false);
+				if(MinMaxValue < MinMaxBestValue)
+				{
+					MinMaxBestMove = *MinMaxiter;
+					MinMaxBestValue = MinMaxValue;
+				}
+			}
 
-        iter++;
-    }
-    vector<vector<SMove> >().swap(Moves);
-    return BestMove;
+			MinMaxiter++;
+
+			if(MinMaxiter == MinMaxMoves.end())
+			{
+				vector<vector<SMove> >().swap(MinMaxMoves);
+					
+				MinMaxBord->ApplyMoves(MinMaxBestMove,true,true,true);
+				for (size_t Teller=0;Teller<MinMaxBestMove.size();Teller++)
+					MadeMoveList.push_back(MinMaxBestMove[Teller]);
+				madeMove = (MinMaxBestMove.size() > 0);
+				lastStatus = AiHasResult;
+				unsigned int MakeMoveEnd = pd->system->getCurrentTimeMilliseconds();
+				if(MakeMoveEnd-MakeMoveStart < 350)
+					pdDelay(350 - (MakeMoveEnd-MakeMoveStart));
+				pd->system->logToConsole("Time Taken to calculate move: %d\n",MakeMoveEnd-MakeMoveStart);
+
+			}
+		}
+	}
+	else
+		if(lastStatus == AiHasResult)
+			lastStatus = AiIdle;
+	
+	return lastStatus;	
 }
 
-bool  ComputerAi::MakeMove(CBord *Bord,int Player)
-{
-    Uint32 Start= SDL_GetTicks(),End=0;
-    vector<SMove> ComputerMove = MinMax(Bord,SearchDepth,Player);
-    size_t Teller;
-    End = SDL_GetTicks();
-    if(End-Start < 350)
-        SDL_Delay(350 - (End-Start));
-    //printf("Time Taken to calculate move: %d calls %d\n",SDL_GetTicks()-Start,FunctionCalls);
-    Bord->ApplyMoves(ComputerMove,true,true,true);
-    for (Teller=0;Teller<ComputerMove.size();Teller++)
-        MadeMoveList.push_back(ComputerMove[Teller]);
-    return (ComputerMove.size() > 0);
 
+
+void ComputerAi::MakeMove(CBord *Bord,int Player)
+{
+    lastStatus = AiCalculating;
+	MakeMoveStart = pd->system->getCurrentTimeMilliseconds();
+    MinMaxMoves.clear();
+    MinMaxBestMove.clear();
+	MinMaxMoves = GenerateMovesList(Bord,Player);
+	MinMaxdepth = SearchDepth;
+	MinMaxPlayer = Player;
+	MinMaxBord = Bord;
+	madeMove = true;
+	//if(Player == Human)
+    //    PrintMoves(Moves);
+    MinMaxiter = MinMaxMoves.begin();
+    if(Player == Computer)
+        MinMaxBestValue = INT_MIN;
+    else
+        MinMaxBestValue = INT_MAX;
 }

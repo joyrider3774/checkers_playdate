@@ -1,19 +1,17 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+#include <pd_api.h>
 #include "common.h"
+#include "cinput.h"
 
 
-
-
-SDL_Surface *Screen, *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing;
-Mix_Chunk *Sounds[NrOfSounds];
-int FunctionCalls = 0;
-Uint32 Ttime=0;
-bool GlobalSoundEnabled=true;
+LCDBitmap *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing;
+int Sounds[NrOfSounds];
 vector<SMove> MadeMoveList;
 bool JumpHeuristicEnabled=false;
-TTF_Font *font;
-SDL_Surface *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
-GameStates GameState = GSTitleScreen;
-Mix_Music *Music;
-int Difficulty = Hard,Volume=128;
+LCDFont *font;
+LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
+GameStates GameState = GSTitleScreenInit;
+int Music;
+int Difficulty = Hard;
+CInput *Input;
+unsigned int FrameTime = 0, Frames = 0; 
+float CurrentMs = 0;

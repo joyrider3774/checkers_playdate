@@ -1,41 +1,58 @@
-#include <SDL/SDL.h>
+#include <pd_api.h>
 #include "options.h"
 #include "common.h"
 #include "coptionmenu.h"
 
-void Options()
+COptionMenu *OptionsMenu;
+
+bool OptionsInit()
 {
-    SDL_Event Event;
-    COptionMenu *Menu = new COptionMenu(Difficulty,JumpHeuristicEnabled);
-    while (GameState == GSOptions)
+	OptionsMenu = new COptionMenu(Difficulty,JumpHeuristicEnabled);
+	return true;
+}
+
+void Options()
+{  
+	if (GameState == GSOptionsInit)
+	{
+		if (OptionsInit())
+			GameState = GSOptions;
+	}
+
+    if (GameState == GSOptions)
     {
-        while(SDL_PollEvent(&Event))
-        {
-            if(Event.type == SDL_KEYDOWN)
-            {
-                switch(Event.key.keysym.sym)
-                {
-                    case SDLK_KP8:
-                        Menu->PreviousItem();
-                        break;
-                    case SDLK_KP2:
-                        Menu->NextItem();
-                        break;
-                    case SDLK_KP4:
-                        Menu->PreviousOption();
-                        break;
-                    case SDLK_KP6:
-                        Menu->NextOption();
-                        break;
-                    default:
-                        GameState = GSTitleScreen;
-                }
-            }
-        }
-        Menu->Draw(Screen);
-        SDL_Flip(Screen);
+       	if (Input->KeyboardPushed[SDLK_UP])
+		{
+    		OptionsMenu->PreviousItem();
+		}
+        
+		if (Input->KeyboardPushed[SDLK_DOWN])
+		{
+			OptionsMenu->NextItem();
+		}
+			
+		if (Input->KeyboardPushed[SDLK_LEFT])
+		{
+			OptionsMenu->PreviousOption();
+		}
+
+		if (Input->KeyboardPushed[SDLK_a] || Input->KeyboardPushed[SDLK_RIGHT])
+		{
+			OptionsMenu->NextOption();
+		}
+
+		if (Input->KeyboardPushed[SDLK_b])
+		{
+			GameState = GSTitleScreenInit;
+		}
+
+		OptionsMenu->Draw(NULL);
     }
-    Difficulty = Menu->GetOptionDifficulty();
-    JumpHeuristicEnabled = Menu->GetOptionJump();
-    delete Menu;
+	
+	if((GameState != GSOptions) && (GameState != GSOptionsInit))
+	{
+    	Difficulty = OptionsMenu->GetOptionDifficulty();
+    	JumpHeuristicEnabled = OptionsMenu->GetOptionJump();
+    	delete OptionsMenu;
+	}
 }

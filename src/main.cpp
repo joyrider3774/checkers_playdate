@@ -5,51 +5,42 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_Main.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_gfxPrimitives.h>
+#include <pdcpp/pdnewlib.h>
+#include <pd_api.h>
+#include "pd_helperfuncs.h"
+#include "caudio.h"
 #include "common.h"
 #include "cbord.h"
 #include "game.h"
 #include "options.h"
 #include "titlescreen.h"
 
+
 using namespace std;
 
 
 void LoadSounds()
 {
-    if(GlobalSoundEnabled)
-    {
-        Sounds[SND_START] = Mix_LoadWAV("./Source/sound/start.wav");
-		Sounds[SND_SELECT] = Mix_LoadWAV("./Source/sound/select.wav");
-		Sounds[SND_TAKEMOVE] = Mix_LoadWAV("./Source/sound/good.wav");
-		Sounds[SND_WRONG] = Mix_LoadWAV("./Source/sound/wrong.wav");
-		Sounds[SND_WINNER] = Mix_LoadWAV("./Source/sound/winner.wav");
-		Sounds[SND_LOSER] = Mix_LoadWAV("./Source/sound/loser.wav");
-		Sounds[SND_MENU] = Mix_LoadWAV("./Source/sound/menu.wav");
-		Sounds[SND_MOVE] = Mix_LoadWAV("./Source/sound/drop.wav");
-		Sounds[SND_DRAW] = Mix_LoadWAV("./Source/sound/draw.wav");
-        Music = Mix_LoadMUS("./Source/music/checkers.ogg");
-    }
+    Sounds[SND_START] = CAudio_LoadSound("start");
+	Sounds[SND_SELECT] = CAudio_LoadSound("select");
+	Sounds[SND_TAKEMOVE] = CAudio_LoadSound("good");
+	Sounds[SND_WRONG] = CAudio_LoadSound("wrong");
+	Sounds[SND_WINNER] = CAudio_LoadSound("winner");
+	Sounds[SND_LOSER] = CAudio_LoadSound("loser");
+	Sounds[SND_MENU] = CAudio_LoadSound("menu");
+	Sounds[SND_MOVE] = CAudio_LoadSound("drop");
+	Sounds[SND_DRAW] = CAudio_LoadSound("draw");
+	Sounds[SND_MUSIC] = CAudio_LoadSound("checkers"); //so it loads into memory
+    //Music = CAudio_LoadMusic("checkers");
 }
 
 void UnloadSounds()
 {
-    if (GlobalSoundEnabled)
-    {
-        if (!Mix_PlayingMusic())
-            Mix_HaltMusic();
-        Mix_FreeMusic(Music);
-        int Teller;
-        for (Teller=0;Teller<NrOfSounds;Teller++)
-		if(Sounds[Teller])
-			Mix_FreeChunk(Sounds[Teller]);
-    }
-
+    CAudio_UnLoadMusic(Music);
+    int Teller;
+    for (Teller=0;Teller<NrOfSounds;Teller++)
+	if(Sounds[Teller])
+		CAudio_UnLoadSound(Sounds[Teller]);
 }
 
 void LoadSettings()
@@ -81,7 +72,6 @@ void SaveSettings()
  	SettingsFile = fopen("./settings.dat","w");
  	if(SettingsFile)
  	{
-		fprintf(SettingsFile,"Volume=%d\n",Volume);
         fprintf(SettingsFile,"Difficulty=%d\n",Difficulty);
         if (JumpHeuristicEnabled)
             fprintf(SettingsFile,"JumpHeuristic=1\n");
@@ -92,86 +82,93 @@ void SaveSettings()
  	}
 }
 
-int main(int argc, char **argv)
+void setupGame()
 {
-	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) == 0)
-	{
-		printf("SDL Succesfully initialized\n");
-        Screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT,16, SDL_SWSURFACE );
-		if(Screen)
-		{
-		    printf("Succesfully Set %dx%dx16\n",WINDOW_WIDTH,WINDOW_HEIGHT);
-
-			SDL_ShowCursor(SDL_DISABLE);
-			{
-				if (Mix_OpenAudio(22050,AUDIO_S16,MIX_DEFAULT_CHANNELS,1024) < 0)
-				{
-					GlobalSoundEnabled = false;
-					printf("Failed to initialise sound!\n");
-					printf("%s\n",Mix_GetError());
-				}
-				else
-				{
-					printf("Audio Succesfully initialised!\n");
-				}
-				if (TTF_Init() == 0)
-				{
-					printf("Succesfully initialized TTF\n");
-					font = TTF_OpenFont("./Source/fonts/font.ttf",18);
-					if (font)
-					{
-						printf("Succesfully Loaded fonts\n");
-						TTF_SetFontStyle(font,TTF_STYLE_NORMAL);
-						LoadSounds();
-						LoadSettings();
-						while (GameState != GSQuit)
-						{
-							switch(GameState)
-							{
-								case GSGame :
-									Game();
-									break;
-								case GSTitleScreen:
-									TitleScreen();
-									break;
-								case GSOptions:
-									Options();
-									break;
-								default:
-									break;
-							}
-						}
-						SaveSettings();
-						UnloadSounds();
-						Mix_CloseAudio();
-						TTF_CloseFont(font);
-						font=NULL;
-					}
-					else
-					{
-						printf("Failed to Load fonts\n");
-					}
-					TTF_Quit();
-				}
-				else
-				{
-					printf("Failed to initialize TTF\n");
-				}
-			}
-			SDL_FreeSurface(Screen);
-            Screen=NULL;
-		}
-		else
-		{
-			printf("Failed to Set Videomode %dx%dx16\n",WINDOW_WIDTH, WINDOW_HEIGHT);
-		}
-		SDL_Quit();
-	}
-	else
-	{
-		printf("Couldn't initialise SDL!\n");
-	}
-
-	return 0;
-
+	CAudio_Init(false);
+	Input = new CInput(pd, CINPUTDELAY);
+	font = loadFontAtPath("fonts/font");
+	LoadSounds();
+	//CAudio_PlayMusic(Music, -1);
+	CAudio_PlaySound(Sounds[SND_MUSIC], -1);
+	//LoadSettings();
 }
+
+void destroyGame()
+{
+	//SaveSettings();
+	UnloadSounds();
+	CAudio_DeInit();
+}
+
+static int mainLoop(void* ud)
+{
+	Input->Update();
+	switch (GameState)
+	{
+		case GSGame:
+		case GSGameInit:
+			Game();
+			break;
+		case GSTitleScreen:
+		case GSTitleScreenInit:
+			TitleScreen();
+			break;
+		case GSOptions:
+		case GSOptionsInit:
+			Options();
+			break;
+		default:
+			break;
+	}
+	
+	if (showFPS)
+	{
+		Frames++;
+		if (pd->system->getCurrentTimeMilliseconds() - FrameTime >= 1000)
+		{
+			CurrentMs = (float)(1000.0f / Frames);
+			Frames = 0;
+			FrameTime += 1000;
+		}
+
+		char* TmpText;
+		pd->system->formatString(&TmpText, "FPS: %.0f\n", 1000.0f / CurrentMs);
+		pd->graphics->drawText(TmpText, strlen(TmpText), kASCIIEncoding, 0, 0);
+		pd->system->realloc(TmpText, 0);
+
+	}
+
+	return 1;
+}
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef _WINDLL
+__declspec(dllexport)
+#endif
+
+int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
+{
+	if ( event == kEventInit )
+	{
+		eventHandler_pdnewlib(playdate, event, arg);		
+		setPDPtr(playdate);
+		playdate->display->setRefreshRate(FRAMERATE);
+		playdate->display->setOffset(40,0);
+		playdate->system->setUpdateCallback(mainLoop, NULL);
+		setupGame();
+	}
+
+	if (event == kEventTerminate)
+	{
+		destroyGame();
+	}
+	return 0;
+}
+
+#ifdef __cplusplus
+}
+#endif

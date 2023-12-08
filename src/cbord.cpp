@@ -1,6 +1,8 @@
 #include <vector>
 #include "cbord.h"
 #include "common.h"
+#include "pd_helperfuncs.h"
+#include "sdl_helpertypes.h"
 
 using namespace std;
 
@@ -156,13 +158,13 @@ void CBord::ApplyMove(SMove &move,bool PlaySound)
     {
         move.DeletedPiece = BordArray[move.NewX - Xi/2][move.NewY - Yi/2];
         BordArray[move.NewX - Xi/2][move.NewY - Yi/2] = 0;
-        if (GlobalSoundEnabled && PlaySound)
-            Mix_PlayChannel(-1,Sounds[SND_TAKEMOVE],0);
+        if (PlaySound)
+            CAudio_PlaySound(Sounds[SND_TAKEMOVE],0);
     }
     else
     {
-        if (GlobalSoundEnabled && PlaySound)
-            Mix_PlayChannel(-1,Sounds[SND_MOVE],0);
+        if (PlaySound)
+            CAudio_PlaySound(Sounds[SND_MOVE],0);
     }
 }
 
@@ -179,9 +181,10 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
             riter++;
             if(DelayDraw && (riter != Moves.rend()))
             {
-                Draw(Screen);
-                SDL_Flip(Screen);
-                SDL_Delay(500);
+				Draw(NULL);
+				//force update screen
+				pd->graphics->display(); 
+                pdDelay(500);
             }
         }
     }
@@ -194,9 +197,10 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
             iter++;
             if(DelayDraw && (riter != Moves.rend()))
             {
-                Draw(Screen);
-                SDL_Flip(Screen);
-                SDL_Delay(500);
+				Draw(NULL);
+				//force update screen
+				pd->graphics->display(); 
+                pdDelay(500);
             }
         }
     }
@@ -252,10 +256,11 @@ void CBord::UndoMoves(vector<SMove> &Moves,bool reverse)
 
 }
 
-void CBord::Draw(SDL_Surface *Surface)
+void CBord::Draw(LCDBitmap *Surface)
 {
     int X,Y;
     SDL_Rect Rect;
+	pd->graphics->pushContext(Surface);
     for (Y=0;Y<NrOfRows;Y++)
     {
         for (X=0;X<NrOfCols;X++)
@@ -266,27 +271,28 @@ void CBord::Draw(SDL_Surface *Surface)
             Rect.h = TileHeight;
             switch(BordArray[X][Y])
             {
-                case HumanPawn:
-                    SDL_BlitSurface(BluePawn,NULL,Surface,&Rect);
+                case HumanPawn:					
+                    pd->graphics->drawBitmap(BluePawn, Rect.x, Rect.y, kBitmapUnflipped);
                     break;
                 case ComputerPawn:
-                    SDL_BlitSurface(RedPawn,NULL,Surface,&Rect);
+                    pd->graphics->drawBitmap(RedPawn, Rect.x, Rect.y, kBitmapUnflipped);
                     break;
                 case ComputerKing:
-                    SDL_BlitSurface(RedKing,NULL,Surface,&Rect);
+                    pd->graphics->drawBitmap(RedKing, Rect.x, Rect.y, kBitmapUnflipped);
                     break;
                 case HumanKing:
-                    SDL_BlitSurface(BlueKing,NULL,Surface,&Rect);
+                    pd->graphics->drawBitmap(BlueKing, Rect.x, Rect.y, kBitmapUnflipped);
                     break;
                 case 0:
                     if(((Y*(NrOfRows-1))+X) % 2 == 1)
-                        SDL_BlitSurface(BlackSquare,NULL,Surface,&Rect);
+                        pd->graphics->drawBitmap(BlackSquare, Rect.x, Rect.y, kBitmapUnflipped);
                     else
-                        SDL_BlitSurface(WhiteSquare,NULL,Surface,&Rect);
+                        pd->graphics->drawBitmap(WhiteSquare, Rect.x, Rect.y, kBitmapUnflipped);
                     break;
             }
         }
     }
+	pd->graphics->popContext();
 }
 
 int CBord::GetBordValue(int X,int Y)

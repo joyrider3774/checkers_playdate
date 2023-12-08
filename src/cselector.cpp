@@ -1,5 +1,5 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include <pd_api.h>
+#include "pd_helperfuncs.h"
 #include "cselector.h"
 #include "common.h"
 #include "cbord.h"
@@ -8,15 +8,9 @@
 // constructor, parameters define the starting position
 CSelector::CSelector(const int PlayFieldXin,const int PlayFieldYin)
 {
-	SDL_Surface* Tmp;
-	Tmp = IMG_Load("./Source/graphics/select.png");
-	IMGSelect = SDL_DisplayFormatAlpha(Tmp);
-	SDL_FreeSurface(Tmp);
 
-	Tmp = IMG_Load("./Source/graphics/select_move.png");
-	IMGSelectMove = SDL_DisplayFormatAlpha(Tmp);
-	SDL_FreeSurface(Tmp);
-
+	IMGSelect = loadImageAtPath("graphics/select.png");
+	IMGSelectMove = loadImageAtPath("graphics/select_move.png");
 
 	SelectedPoint.X = -1; // there's no selection set it 0
 	SelectedPoint.Y = -1;
@@ -73,11 +67,10 @@ void CSelector::DeSelect()
 }
 
 // Draw the blue box on the current position, with the offsets in mind
-void CSelector::Draw(SDL_Surface *Surface,CBord *Bord)
+void CSelector::Draw(LCDBitmap *Surface,CBord *Bord)
 {
 	SMove Move;
 	bool JumpFound = false;
-	SDL_Rect Rect;
 	if (Visible)
 	{
 		if(HasSelection)
@@ -92,41 +85,25 @@ void CSelector::Draw(SDL_Surface *Surface,CBord *Bord)
 			Move.DeletedPiece = -1;
 			if(Bord->ValidMove(Move))
 			{
-				Rect.x = (SelectedPoint.X-2) * (TileWidth);
-				Rect.y = (SelectedPoint.Y-2) * (TileHeight);
-				Rect.w = TileWidth;
-				Rect.h = TileHeight;
-				SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
+				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			Move.NewX = SelectedPoint.X + 2;
 			if(Bord->ValidMove(Move))
 			{
-				Rect.x = (SelectedPoint.X+2) * (TileWidth);
-				Rect.y = (SelectedPoint.Y-2) * (TileHeight);
-				Rect.w = TileWidth;
-				Rect.h = TileHeight;
-				SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
+				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			Move.NewY = SelectedPoint.Y + 2;
 			if(Bord->ValidMove(Move))
 			{
-				Rect.x = (SelectedPoint.X+2) * (TileWidth);
-				Rect.y = (SelectedPoint.Y+2) * (TileHeight);
-				Rect.w = TileWidth;
-				Rect.h = TileHeight;
-				SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
+				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y+2) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			Move.NewX = SelectedPoint.X -2;
 			if(Bord->ValidMove(Move))
 			{
-				Rect.x = (SelectedPoint.X-2) * (TileWidth);
-				Rect.y = (SelectedPoint.Y+2) * (TileHeight);
-				Rect.w = TileWidth;
-				Rect.h = TileHeight;
-				SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
+				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			if (!JumpFound)
@@ -134,60 +111,33 @@ void CSelector::Draw(SDL_Surface *Surface,CBord *Bord)
 				Move.NewX = SelectedPoint.X -1;
 				Move.NewY = SelectedPoint.Y -1;
 				if(Bord->ValidMove(Move))
-				{
-					Rect.x = (SelectedPoint.X-1) * (TileWidth);
-					Rect.y = (SelectedPoint.Y-1) * (TileHeight);
-					Rect.w = TileWidth;
-					Rect.h = TileHeight;
-					SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
-				}
+					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-1) * (TileWidth), (SelectedPoint.Y-1) * (TileHeight), kBitmapUnflipped);
+				
 				Move.NewX = SelectedPoint.X + 1;
 				if(Bord->ValidMove(Move))
-				{
-					Rect.x = (SelectedPoint.X+1) * (TileWidth);
-					Rect.y = (SelectedPoint.Y-1) * (TileHeight);
-					Rect.w = TileWidth;
-					Rect.h = TileHeight;
-					SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
-				}
+					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+1) * (TileWidth), (SelectedPoint.Y-1) * (TileHeight), kBitmapUnflipped);
+				
 				Move.NewY = SelectedPoint.Y + 1;
 				if(Bord->ValidMove(Move))
-				{
-					Rect.x = (SelectedPoint.X+1) * (TileWidth);
-					Rect.y = (SelectedPoint.Y+1) * (TileHeight);
-					Rect.w = TileWidth;
-					Rect.h = TileHeight;
-					SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
-				}
+					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+1) * (TileWidth), (SelectedPoint.Y+1) * (TileHeight), kBitmapUnflipped);
+				
 				Move.NewX = SelectedPoint.X -1;
 				if(Bord->ValidMove(Move))
-				{
-					Rect.x = (SelectedPoint.X-1) * (TileWidth);
-					Rect.y = (SelectedPoint.Y+1) * (TileHeight);
-					Rect.w = TileWidth;
-					Rect.h = TileHeight;
-					SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
-				}
+					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-1) * (TileWidth), (SelectedPoint.Y+1) * (TileHeight), kBitmapUnflipped);
+				
 			}
-			Rect.x = (CurrentPoint.X) * (TileWidth);
-			Rect.y = (CurrentPoint.Y) * (TileHeight);
-			Rect.w = TileWidth;
-			Rect.h = TileHeight;
-			SDL_BlitSurface(IMGSelectMove, NULL, Surface, &Rect);
+			pd->graphics->drawBitmap(IMGSelectMove, (CurrentPoint.X) * (TileWidth), (CurrentPoint.Y) * (TileHeight), kBitmapUnflipped);
+				
 		}
 		else
 		{
-			Rect.x = (CurrentPoint.X) * (TileWidth);
-			Rect.y = (CurrentPoint.Y) * (TileHeight);
-			Rect.w = TileWidth;
-			Rect.h = TileHeight;
-			SDL_BlitSurface(IMGSelect, NULL, Surface, &Rect);
+			pd->graphics->drawBitmap(IMGSelect, (CurrentPoint.X) * (TileWidth), (CurrentPoint.Y) * (TileHeight), kBitmapUnflipped);
 		}
 	}
 }
 
 CSelector::~CSelector()
 {
-	SDL_FreeSurface(IMGSelect);
-	SDL_FreeSurface(IMGSelectMove);
+	pd->graphics->freeBitmap(IMGSelect);
+	pd->graphics->freeBitmap(IMGSelectMove);
 }

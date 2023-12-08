@@ -13,7 +13,7 @@ class CBord
         void ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool PlaySound);
         void UndoMove(SMove &Move);
         void UndoMoves(vector<SMove> &Moves,bool reverse);
-        void Draw(SDL_Surface *Surface);
+        void Draw(LCDBitmap *Surface);
         bool ValidMove(SMove move);
         int GetBordValue(int X,int Y);
         bool GameEnded();

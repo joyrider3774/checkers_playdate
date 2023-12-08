@@ -2,14 +2,18 @@
 #define COMMON_H
 
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL_ttf.h>
+#include <pd_api.h>
+#include "caudio.h"
+#include "cinput.h"
 
 using namespace std;
 
+const bool showFPS = false;
+
 const int
-        WINDOW_WIDTH = 320,
+        CINPUTDELAY = 5,
+		FRAMERATE = 30,
+		WINDOW_WIDTH = 320,
 		WINDOW_HEIGHT = 240,
 		NrOfRows = 8,
         NrOfCols = 8,
@@ -26,7 +30,7 @@ const int
         Easy=2,
         Hard=3,
         VeryHard=4,
-        NrOfSounds=9,
+        NrOfSounds=10,
         SND_SELECT=0,
 		SND_TAKEMOVE=1,
 		SND_WRONG=2,
@@ -36,6 +40,7 @@ const int
 		SND_MENU=6,
 		SND_MOVE=7,
 		SND_DRAW=8,
+		SND_MUSIC=9,
         BordValues[8][8] = {{4,2,2,2,2,2,2,4},
                             {4,3,2,5,5,2,3,4},
                             {4,3,2,5,5,2,3,4},
@@ -72,27 +77,27 @@ struct SPoint
     int X,Y;
 };
 
-enum GameStates {GSQuit,GSGame,GSTitleScreen,GSOptions};
+#define GSINITDIFF 50
+
+enum GameStates {GSGame,GSTitleScreen,GSOptions,
+	GSGameInit,GSTitleScreenInit,GSOptionsInit};
 enum GameResult {CPUWin,PlayerWin,Draw,Playing};
 typedef enum GameStates GameStates;
 typedef enum GameResult GameResult;
 
+extern CInput *Input;
+extern LCDBitmap *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing;
+extern int Sounds[NrOfSounds];
 
-extern SDL_Surface *Screen, *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing;
-extern Mix_Chunk *Sounds[NrOfSounds];
-
-extern int FunctionCalls;
-extern Uint32 Ttime;
-extern bool GlobalSoundEnabled;
 extern vector<SMove> MadeMoveList;
 extern bool JumpHeuristicEnabled;
-extern TTF_Font *font;
-extern SDL_Surface *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
+extern LCDFont *font;
+extern LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
 extern GameStates GameState;
-extern Mix_Music *Music;
-extern int Difficulty,Volume;
-
-
+extern int Music;
+extern int Difficulty;
+extern unsigned int FrameTime, Frames; 
+extern float CurrentMs;
 
 
 #endif
