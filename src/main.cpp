@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#ifndef SDL2API
 #include <pdcpp/pdnewlib.h>
+#endif
 #include <pd_api.h>
 #include "pd_helperfuncs.h"
 #include "caudio.h"
@@ -143,7 +145,9 @@ static int mainLoop(void* ud)
 
 
 #ifdef __cplusplus
+#ifndef SDL2API
 extern "C" {
+#endif
 #endif
 
 #ifdef _WINDLL
@@ -154,7 +158,9 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 {
 	if ( event == kEventInit )
 	{
+		#ifndef SDL2API
 		eventHandler_pdnewlib(playdate, event, arg);		
+		#endif
 		setPDPtr(playdate);
 		playdate->display->setRefreshRate(FRAMERATE);
 		playdate->display->setOffset(40,0);
@@ -170,5 +176,7 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 }
 
 #ifdef __cplusplus
+#ifndef SDL2API
 }
+#endif
 #endif
