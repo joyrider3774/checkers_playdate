@@ -6,6 +6,7 @@
 
 PlaydateAPI* pd;
 LCDBitmap *Buffer = NULL;
+static volatile char pdDelayDummy;
 
 typedef struct DrawTextColorBitmapCacheItem DrawTextColorBitmapCacheItem;
 struct DrawTextColorBitmapCacheItem
@@ -333,7 +334,10 @@ void setPDPtr(PlaydateAPI* playdate)
 void pdDelay(unsigned int milliseconds)
 {
 	unsigned int start = pd->system->getCurrentTimeMilliseconds();
-	while (start + milliseconds > pd->system->getCurrentTimeMilliseconds());
+	while (start + milliseconds > pd->system->getCurrentTimeMilliseconds())
+	{
+		(void)pdDelayDummy;
+	}
 }
 
 bool pdFileExists(char* Path)
