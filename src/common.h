@@ -79,8 +79,8 @@ struct SPoint
 
 #define GSINITDIFF 50
 
-enum GameStates {GSGame,GSTitleScreen,GSOptions,
-	GSGameInit,GSTitleScreenInit,GSOptionsInit};
+enum GameStates {GSGame,GSTitleScreen,GSOptions,GSCredits,
+	GSGameInit,GSTitleScreenInit,GSOptionsInit,GSCreditsInit};
 enum GameResult {CPUWin,PlayerWin,Draw,Playing};
 typedef enum GameStates GameStates;
 typedef enum GameResult GameResult;

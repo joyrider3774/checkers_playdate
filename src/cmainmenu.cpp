@@ -14,8 +14,8 @@ CMainMenu::CMainMenu()
     IMGPlay2 = loadImageAtPath("graphics/play2.png");
     IMGOptions1 = loadImageAtPath("graphics/options1.png");
     IMGOptions2 = loadImageAtPath("graphics/options2.png");
-    IMGQuit1 = loadImageAtPath("graphics/quit1.png");
-    IMGQuit2 = loadImageAtPath("graphics/quit2.png");
+    IMGCredits1 = loadImageAtPath("graphics/credits1.png");
+    IMGCredits2 = loadImageAtPath("graphics/credits2.png");
 }
 
 // Destructor will free the surface images
@@ -23,8 +23,8 @@ CMainMenu::~CMainMenu()
 {
     pd->graphics->freeBitmap(IMGPlay1);
     pd->graphics->freeBitmap(IMGPlay2);
-    pd->graphics->freeBitmap(IMGQuit1);
-    pd->graphics->freeBitmap(IMGQuit2);
+    pd->graphics->freeBitmap(IMGCredits1);
+    pd->graphics->freeBitmap(IMGCredits2);
     pd->graphics->freeBitmap(IMGOptions1);
     pd->graphics->freeBitmap(IMGOptions2);
     pd->graphics->freeBitmap(IMGTitleScreen);
@@ -76,11 +76,11 @@ void CMainMenu::Draw(LCDBitmap *Surface)
 
     if (Selection == 3) // = quit draw purple
     {
-        pd->graphics->drawBitmap(IMGQuit1, 100, 150, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGCredits1, 100, 150, kBitmapUnflipped);
     }
     else // draw blue
     {
-        pd->graphics->drawBitmap(IMGQuit2, 100, 150, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGCredits2, 100, 150, kBitmapUnflipped);
     }
 
 }

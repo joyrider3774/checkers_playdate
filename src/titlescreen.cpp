@@ -39,7 +39,7 @@ void TitleScreen()
                     GameState = GSOptionsInit;
                     break;
                 case 3:
-                    //GameState = GSQuit;
+                    GameState = GSCreditsInit;
                 	break;
 				default:
 					break;

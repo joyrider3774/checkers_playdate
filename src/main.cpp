@@ -16,6 +16,7 @@
 #include "game.h"
 #include "options.h"
 #include "titlescreen.h"
+#include "credits.h"
 
 
 using namespace std;
@@ -118,6 +119,10 @@ static int mainLoop(void* ud)
 		case GSOptions:
 		case GSOptionsInit:
 			Options();
+			break;
+		case GSCredits:
+		case GSCreditsInit:
+			Credits();
 			break;
 		default:
 			break;
