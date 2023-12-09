@@ -195,7 +195,7 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
         {
             ApplyMove(*iter,PlaySound);
             iter++;
-            if(DelayDraw && (riter != Moves.rend()))
+            if(DelayDraw && (iter != Moves.end()))
             {
 				Draw(NULL);
 				//force update screen
