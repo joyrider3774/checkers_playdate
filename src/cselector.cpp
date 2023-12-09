@@ -85,25 +85,28 @@ void CSelector::Draw(LCDBitmap *Surface,CBord *Bord)
 			Move.DeletedPiece = -1;
 			if(Bord->ValidMove(Move))
 			{
-				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
-			Move.NewX = SelectedPoint.X + 2;
+			Move.NewX = SelectedPoint.X +2;
+			Move.NewY = SelectedPoint.Y -2;
 			if(Bord->ValidMove(Move))
 			{
-				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
-			Move.NewY = SelectedPoint.Y + 2;
+			Move.NewX = SelectedPoint.X +2;
+			Move.NewY = SelectedPoint.Y +2;
 			if(Bord->ValidMove(Move))
 			{
-				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y+2) * (TileHeight), kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			Move.NewX = SelectedPoint.X -2;
+			Move.NewY = SelectedPoint.Y +2;
 			if(Bord->ValidMove(Move))
 			{
-				pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+2) * (TileWidth), (SelectedPoint.Y-2) * (TileHeight), kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				JumpFound = true;
 			}
 			if (!JumpFound)
@@ -111,19 +114,22 @@ void CSelector::Draw(LCDBitmap *Surface,CBord *Bord)
 				Move.NewX = SelectedPoint.X -1;
 				Move.NewY = SelectedPoint.Y -1;
 				if(Bord->ValidMove(Move))
-					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-1) * (TileWidth), (SelectedPoint.Y-1) * (TileHeight), kBitmapUnflipped);
+					pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				
-				Move.NewX = SelectedPoint.X + 1;
+				Move.NewX = SelectedPoint.X +1;
+				Move.NewY = SelectedPoint.Y -1;				
 				if(Bord->ValidMove(Move))
-					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+1) * (TileWidth), (SelectedPoint.Y-1) * (TileHeight), kBitmapUnflipped);
+					pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				
-				Move.NewY = SelectedPoint.Y + 1;
+				Move.NewX = SelectedPoint.X +1;
+				Move.NewY = SelectedPoint.Y +1;
 				if(Bord->ValidMove(Move))
-					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X+1) * (TileWidth), (SelectedPoint.Y+1) * (TileHeight), kBitmapUnflipped);
+					pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				
 				Move.NewX = SelectedPoint.X -1;
+				Move.NewY = SelectedPoint.Y +1;
 				if(Bord->ValidMove(Move))
-					pd->graphics->drawBitmap(IMGSelectMove, (SelectedPoint.X-1) * (TileWidth), (SelectedPoint.Y+1) * (TileHeight), kBitmapUnflipped);
+					pd->graphics->drawBitmap(IMGSelectMove, (Move.NewX) * (TileWidth), (Move.NewY) * (TileHeight), kBitmapUnflipped);
 				
 			}
 			pd->graphics->drawBitmap(IMGSelectMove, (CurrentPoint.X) * (TileWidth), (CurrentPoint.Y) * (TileHeight), kBitmapUnflipped);
