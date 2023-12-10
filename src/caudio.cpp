@@ -174,9 +174,10 @@ int CAudio_LoadMusic(std::string  FileName)
 				FilePlayer* Tmp = pd->sound->fileplayer->newPlayer();
 				if (Tmp)
 				{
-					pd->sound->fileplayer->setBufferLength(Tmp, CAudio_MusicBufferLen);
 					if (pd->sound->fileplayer->loadIntoPlayer(Tmp, FullFileName) == 1)
-					{						
+					{	
+						//needs to be called after loadIntoPlayer or the buffer length does not seem to be aplied		
+						pd->sound->fileplayer->setBufferLength(Tmp, CAudio_MusicBufferLen);
 						CAudio_Music[i] = Tmp;
 						if (CAudio_DebugInfo)
 							pd->system->logToConsole("Loaded Music %s\n", FullFileName);
