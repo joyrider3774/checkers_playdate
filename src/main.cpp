@@ -66,6 +66,7 @@ void destroyGame()
 
 static int mainLoop(void* ud)
 {
+	pd->graphics->setDrawOffset(40,0);
 	Input->Update();
 	switch (GameState)
 	{
@@ -125,11 +126,10 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 	if ( event == kEventInit )
 	{
 		#ifndef SDL2API
-		eventHandler_pdnewlib(playdate, event, arg);		
+		eventHandler_pdnewlib(playdate, event, arg);
 		#endif
 		setPDPtr(playdate);
 		playdate->display->setRefreshRate(FRAMERATE);
-		playdate->display->setOffset(40,0);
 		playdate->system->setUpdateCallback(mainLoop, NULL);
 		setupGame();
 	}

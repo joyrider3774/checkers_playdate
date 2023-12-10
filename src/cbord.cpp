@@ -260,7 +260,8 @@ void CBord::Draw(LCDBitmap *Surface)
 {
     int X,Y;
     SDL_Rect Rect;
-	pd->graphics->pushContext(Surface);
+	if(Surface != NULL)
+		pd->graphics->pushContext(Surface);
     for (Y=0;Y<NrOfRows;Y++)
     {
         for (X=0;X<NrOfCols;X++)
@@ -292,7 +293,8 @@ void CBord::Draw(LCDBitmap *Surface)
             }
         }
     }
-	pd->graphics->popContext();
+	if(Surface != NULL)
+		pd->graphics->popContext();
 }
 
 int CBord::GetBordValue(int X,int Y)

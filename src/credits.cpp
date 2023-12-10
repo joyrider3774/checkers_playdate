@@ -10,7 +10,6 @@ bool CreditsInit()
 {
 	IMGCredits = loadImageAtPath("graphics/credits");
 	IMGTitleScreen = loadImageAtPath("graphics/titlescreen");
-	pd->display->setOffset(0, 0);
 	return true;
 }
 
@@ -28,14 +27,15 @@ void Credits()
 		{
 			GameState = GSTitleScreenInit;
      	}
-		
+		pd->graphics->setDrawOffset(0, 0);
+		pd->graphics->clear(kColorWhite);
 		pd->graphics->drawBitmap(IMGCredits, 0, 0, kBitmapUnflipped);
     }
 	
 	if ((GameState != GSCreditsInit) && (GameState != GSCredits))
 	{
-		pd->display->setOffset(40, 0);	
 		pd->graphics->clear(kColorWhite);
+		pd->graphics->setDrawOffset(40, 0);	
 		pd->graphics->drawBitmap(IMGTitleScreen, 0, 0, kBitmapUnflipped);
 		pd->graphics->freeBitmap(IMGCredits);
 		pd->graphics->freeBitmap(IMGTitleScreen);

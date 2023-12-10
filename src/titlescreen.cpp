@@ -1,4 +1,5 @@
 #include <pd_api.h>
+#include "pd_helperfuncs.h"
 #include "caudio.h"
 #include "common.h"
 #include "cmainmenu.h"
@@ -45,7 +46,8 @@ void TitleScreen()
 					break;
             }
 		}
-        Menu->Draw(NULL);        
+		pd->graphics->clear(kColorWhite);
+        Menu->Draw(NULL);
     }
 
 	if ((GameState != GSTitleScreen) && (GameState != GSTitleScreenInit))

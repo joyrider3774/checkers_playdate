@@ -633,9 +633,11 @@ void Game()
 			else
 				GameState = GSTitleScreenInit;
 		}
+		pd->graphics->clear(kColorBlack);
 		Bord->Draw(NULL);
 		if (!Bord->GameEnded())
 			Selector->Draw(NULL, Bord);
+
 		pd->graphics->drawBitmap(IMGPanel, 240, 0, kBitmapUnflipped);
 		if(PlayerNr == Human)
 			pd->graphics->drawBitmap(IMGPlayer, 245, 5, kBitmapUnflipped);
