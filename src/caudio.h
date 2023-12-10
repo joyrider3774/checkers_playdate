@@ -5,7 +5,7 @@
 #include <string>
 #include <stdbool.h>
 
-void CAudio_Init(bool ADebugInfo);
+void CAudio_Init(bool ADebugInfo, float MusicBufferLen);
 void CAudio_DeInit();
 void CAudio_IncVolumeMusic();
 void CAudio_DecVolumeMusic();
@@ -32,5 +32,7 @@ void CAudio_PlaySound(int SoundID, int loops);
 bool CAudio_IsMusicPlaying();
 void CAudio_StopMusic();
 void CAudio_StopSound();
+void CAudio_SetSoundEnabled(bool Enabled);
+void CAudio_SetMusicEnabled(bool Enabled);
 
 #endif

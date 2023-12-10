@@ -6,7 +6,7 @@
 LCDBitmap *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing;
 int Sounds[NrOfSounds];
 vector<SMove> MadeMoveList;
-bool JumpHeuristicEnabled=false;
+bool JumpHeuristicEnabled=false, SoundEnabled=true, MusicEnabled=true;
 LCDFont *font;
 LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
 GameStates GameState = GSTitleScreenInit;

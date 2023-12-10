@@ -30,7 +30,7 @@ const int
         Easy=2,
         Hard=3,
         VeryHard=4,
-        NrOfSounds=10,
+        NrOfSounds=9,
         SND_SELECT=0,
 		SND_TAKEMOVE=1,
 		SND_WRONG=2,
@@ -40,7 +40,6 @@ const int
 		SND_MENU=6,
 		SND_MOVE=7,
 		SND_DRAW=8,
-		SND_MUSIC=9,
         BordValues[8][8] = {{4,2,2,2,2,2,2,4},
                             {4,3,2,5,5,2,3,4},
                             {4,3,2,5,5,2,3,4},
@@ -90,7 +89,7 @@ extern LCDBitmap *WhiteSquare,*BlackSquare,*BluePawn,*RedPawn,*RedKing,*BlueKing
 extern int Sounds[NrOfSounds];
 
 extern vector<SMove> MadeMoveList;
-extern bool JumpHeuristicEnabled;
+extern bool JumpHeuristicEnabled, SoundEnabled, MusicEnabled;
 extern LCDFont *font;
 extern LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
 extern GameStates GameState;

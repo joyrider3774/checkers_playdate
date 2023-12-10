@@ -33,8 +33,7 @@ void LoadSounds()
 	Sounds[SND_MENU] = CAudio_LoadSound("menu");
 	Sounds[SND_MOVE] = CAudio_LoadSound("drop");
 	Sounds[SND_DRAW] = CAudio_LoadSound("draw");
-	Sounds[SND_MUSIC] = CAudio_LoadSound("checkers"); //so it loads into memory
-    //Music = CAudio_LoadMusic("checkers");
+    Music = CAudio_LoadMusic("checkers");
 }
 
 void UnloadSounds()
@@ -48,13 +47,14 @@ void UnloadSounds()
 
 void setupGame()
 {
-	CAudio_Init(false);
+	CAudio_Init(false, 5.0f);
 	Input = new CInput(pd, CINPUTDELAY);
 	font = loadFontAtPath("fonts/font");
 	LoadSounds();
-	//CAudio_PlayMusic(Music, -1);
-	CAudio_PlaySound(Sounds[SND_MUSIC], -1);
 	LoadSettings();
+	CAudio_SetSoundEnabled(SoundEnabled);
+	CAudio_SetMusicEnabled(MusicEnabled);
+	CAudio_PlayMusic(Music, -1);
 }
 
 void destroyGame()
