@@ -2,6 +2,7 @@
 #include "options.h"
 #include "common.h"
 #include "coptionmenu.h"
+#include "settings.h"
 
 COptionMenu *OptionsMenu;
 
@@ -53,6 +54,7 @@ void Options()
 	{
     	Difficulty = OptionsMenu->GetOptionDifficulty();
     	JumpHeuristicEnabled = OptionsMenu->GetOptionJump();
+		SaveSettings();
     	delete OptionsMenu;
 	}
 }

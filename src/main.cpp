@@ -17,7 +17,7 @@
 #include "options.h"
 #include "titlescreen.h"
 #include "credits.h"
-
+#include "settings.h"
 
 using namespace std;
 
@@ -46,45 +46,6 @@ void UnloadSounds()
 		CAudio_UnLoadSound(Sounds[Teller]);
 }
 
-void LoadSettings()
-{
- 	FILE *SettingsFile;
- 	int Value=0;
- 	SettingsFile = fopen("./settings.dat","r");
- 	if(SettingsFile)
- 	{
-        fscanf(SettingsFile,"Difficulty=%d\n",&Difficulty);
-        fscanf(SettingsFile,"JumpHeuristic=%d\n",&Value);
-        if (Value == 1)
-            JumpHeuristicEnabled = true;
-        else
-            JumpHeuristicEnabled = false;
-		fclose(SettingsFile);
- 	}
- 	else
- 	{
-        Difficulty = Hard;
-        JumpHeuristicEnabled = false;
-	}
-}
-
-// Save the settings
-void SaveSettings()
-{
- 	FILE *SettingsFile;
- 	SettingsFile = fopen("./settings.dat","w");
- 	if(SettingsFile)
- 	{
-        fprintf(SettingsFile,"Difficulty=%d\n",Difficulty);
-        if (JumpHeuristicEnabled)
-            fprintf(SettingsFile,"JumpHeuristic=1\n");
-        else
-            fprintf(SettingsFile,"JumpHeuristic=0\n");
-		fclose(SettingsFile);
-//		sync();
- 	}
-}
-
 void setupGame()
 {
 	CAudio_Init(false);
@@ -93,12 +54,12 @@ void setupGame()
 	LoadSounds();
 	//CAudio_PlayMusic(Music, -1);
 	CAudio_PlaySound(Sounds[SND_MUSIC], -1);
-	//LoadSettings();
+	LoadSettings();
 }
 
 void destroyGame()
 {
-	//SaveSettings();
+	SaveSettings();
 	UnloadSounds();
 	CAudio_DeInit();
 }
