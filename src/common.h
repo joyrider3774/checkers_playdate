@@ -11,7 +11,7 @@ using namespace std;
 const bool showFPS = false;
 
 const int
-        CINPUTDELAY = 5,
+        CINPUTDELAY = 15,
 		FRAMERATE = 30,
 		WINDOW_WIDTH = 320,
 		WINDOW_HEIGHT = 240,

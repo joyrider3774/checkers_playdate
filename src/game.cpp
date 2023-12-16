@@ -120,7 +120,7 @@ void Game()
 		    	Selector->SetPosition(Selector->GetPosition().X,Selector->GetPosition().Y-1);
 
 
-		if(Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_RIGHT])
+		if(Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_RIGHT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -142,6 +142,8 @@ void Game()
 							if(MoveInList(Move,TakeMovesList))
 							{
 								Bord->ApplyMove(Move,true);
+								Input->Delay();
+								Input->Reset();
 								MadeMoveList.push_back(Move);
 								Selector->SetPosition(Selector->GetSelection().X +2,Selector->GetSelection().Y -2);
 								if((Move.KingX == -1) && (Move.KingY == -1))
@@ -170,12 +172,16 @@ void Game()
 							}
 							else
 							{
+								Input->Delay();
+								Input->Reset();
 								CAudio_PlaySound(Sounds[SND_WRONG],0);
 							}
 						}
 						else
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							PlayerNr= Computer;
 							Selector->HasSelection = false;
@@ -187,6 +193,8 @@ void Game()
 						if( MoveInList(Move,NextTakeMoveList))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition(Selector->GetSelection().X +2,Selector->GetSelection().Y -2);
 							Selector->HasSelection = false;
@@ -226,6 +234,8 @@ void Game()
 						if (Bord->ValidMove(Move))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition( Selector->GetSelection().X+1,Selector->GetSelection().Y-1);
 							Selector->HasSelection = false;
@@ -234,18 +244,22 @@ void Game()
 						}
 						else
 						{
+							Input->Delay();
+							Input->Reset();
 							CAudio_PlaySound(Sounds[SND_WRONG],0);
 						}
 					}
 					else
 					{
+						Input->Delay();
+						Input->Reset();
 						CAudio_PlaySound(Sounds[SND_WRONG],0);
 					}
 				}
 
 			}
 
-		if(Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_LEFT])
+		if(Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_LEFT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -267,6 +281,8 @@ void Game()
 							if(MoveInList(Move,TakeMovesList))
 							{
 								Bord->ApplyMove(Move,true);
+								Input->Delay();
+								Input->Reset();
 								MadeMoveList.push_back(Move);
 								Selector->SetPosition(Selector->GetSelection().X -2,Selector->GetSelection().Y -2);
 								if((Move.KingX == -1) && (Move.KingY == -1))
@@ -295,12 +311,16 @@ void Game()
 							}
 							else
 							{
+								Input->Delay();
+								Input->Reset();
 								CAudio_PlaySound(Sounds[SND_WRONG],0);
 							}
 						}
 						else
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							PlayerNr= Computer;
 							Selector->HasSelection = false;
@@ -312,6 +332,8 @@ void Game()
 						if( MoveInList(Move,NextTakeMoveList))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition(Selector->GetSelection().X -2,Selector->GetSelection().Y -2);
 							Selector->HasSelection = false;
@@ -351,6 +373,8 @@ void Game()
 						if (Bord->ValidMove(Move))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition( Selector->GetSelection().X-1,Selector->GetSelection().Y-1);
 							Selector->HasSelection = false;
@@ -359,18 +383,22 @@ void Game()
 						}
 						else
 						{
+							Input->Delay();
+							Input->Reset();
 							CAudio_PlaySound(Sounds[SND_WRONG],0);
 						}
 					}
 					else
 					{
+						Input->Delay();
+						Input->Reset();
 						CAudio_PlaySound(Sounds[SND_WRONG],0);
 					}
 				}
 
 			}
 		
-		if(Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_LEFT])
+		if(Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_LEFT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -392,6 +420,8 @@ void Game()
 							if(MoveInList(Move,TakeMovesList))
 							{
 								Bord->ApplyMove(Move,true);
+								Input->Delay();
+								Input->Reset();
 								MadeMoveList.push_back(Move);
 								Selector->SetPosition(Selector->GetSelection().X -2,Selector->GetSelection().Y +2);
 								if((Move.KingX == -1) && (Move.KingY == -1))
@@ -420,12 +450,16 @@ void Game()
 							}
 							else
 							{
+								Input->Delay();
+								Input->Reset();
 								CAudio_PlaySound(Sounds[SND_WRONG],0);
 							}
 						}
 						else
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							PlayerNr= Computer;
 							Selector->HasSelection = false;
@@ -437,6 +471,8 @@ void Game()
 						if( MoveInList(Move,NextTakeMoveList))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition(Selector->GetSelection().X -2,Selector->GetSelection().Y +2);
 							Selector->HasSelection = false;
@@ -476,6 +512,8 @@ void Game()
 						if (Bord->ValidMove(Move))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition( Selector->GetSelection().X-1,Selector->GetSelection().Y+1);
 							Selector->HasSelection = false;
@@ -484,18 +522,22 @@ void Game()
 						}
 						else
 						{
+							Input->Delay();
+							Input->Reset();
 							CAudio_PlaySound(Sounds[SND_WRONG],0);
 						}
 					}
 					else
 					{
+						Input->Delay();
+						Input->Reset();
 						CAudio_PlaySound(Sounds[SND_WRONG],0);
 					}
 				}
 
 			}
 
-		if(Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_RIGHT])
+		if(Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_RIGHT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -516,6 +558,8 @@ void Game()
 							if(MoveInList(Move,TakeMovesList))
 							{
 								Bord->ApplyMove(Move,true);
+								Input->Delay();
+								Input->Reset();
 								MadeMoveList.push_back(Move);
 								Selector->SetPosition(Selector->GetSelection().X +2,Selector->GetSelection().Y +2);
 								if((Move.KingX == -1) && (Move.KingY == -1))
@@ -544,12 +588,16 @@ void Game()
 							}
 							else
 							{
+								Input->Delay();
+								Input->Reset();
 								CAudio_PlaySound(Sounds[SND_WRONG],0);
 							}
 						}
 						else
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							PlayerNr= Computer;
 							Selector->HasSelection = false;
@@ -561,6 +609,8 @@ void Game()
 						if( MoveInList(Move,NextTakeMoveList))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition(Selector->GetSelection().X +2,Selector->GetSelection().Y +2);
 							Selector->HasSelection = false;
@@ -600,6 +650,8 @@ void Game()
 						if (Bord->ValidMove(Move))
 						{
 							Bord->ApplyMove(Move,true);
+							Input->Delay();
+							Input->Reset();
 							MadeMoveList.push_back(Move);
 							Selector->SetPosition( Selector->GetSelection().X+1,Selector->GetSelection().Y+1);
 							Selector->HasSelection = false;
@@ -608,11 +660,15 @@ void Game()
 						}
 						else
 						{
+							Input->Delay();
+							Input->Reset();
 							CAudio_PlaySound(Sounds[SND_WRONG],0);
 						}
 					}
 					else
 					{
+						Input->Delay();
+						Input->Reset();
 						CAudio_PlaySound(Sounds[SND_WRONG],0);
 					}
 				}
