@@ -108,7 +108,11 @@ void Game()
 		if(Input->KeyboardPushed[SDLK_b])
 		{
 			if((Result == Playing) && (PlayerNr = Human))
+			{
+				if(!confirmingQuit)
+					CAudio_PlaySound(Sounds[SND_SELECT],0);
 				confirmingQuit = !confirmingQuit;
+			}
 		}
 		
 		if(!confirmingQuit && Input->KeyboardPushed[SDLK_LEFT])
