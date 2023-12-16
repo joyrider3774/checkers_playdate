@@ -8,7 +8,7 @@ int Sounds[NrOfSounds];
 vector<SMove> MadeMoveList;
 bool JumpHeuristicEnabled=false, SoundEnabled=true, MusicEnabled=true;
 LCDFont *font;
-LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
+LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw,*IMGConfirmQuit;
 GameStates GameState = GSTitleScreenInit;
 int Music;
 int Difficulty = Hard;

@@ -12,6 +12,8 @@
 
 using namespace std;
 
+bool confirmingQuit = false;
+
 bool MoveInList(SMove Move,vector<SMove> List)
 {
     vector<SMove>::iterator iter=List.begin();
@@ -27,18 +29,19 @@ bool MoveInList(SMove Move,vector<SMove> List)
 
 void LoadGameGraphics()
 {
-    BlackSquare = loadImageAtPath("graphics/black.png");
-    WhiteSquare = loadImageAtPath("graphics/white.png");
-    BluePawn = loadImageAtPath("graphics/blue.png");
-    RedPawn = loadImageAtPath("graphics/red.png");
-    RedKing = loadImageAtPath("graphics/redking.png");
-    BlueKing = loadImageAtPath("graphics/blueking.png");
-    IMGPanel = loadImageAtPath("graphics/panel.png");
-    IMGPlayer = loadImageAtPath("graphics/player.png");
-    IMGCpu = loadImageAtPath("graphics/cpu.png");
-    IMGPlayerWins = loadImageAtPath("graphics/playerwins.png");
-    IMGCpuWins = loadImageAtPath("graphics/cpuwins.png");
-    IMGDraw = loadImageAtPath("graphics/draw.png");
+    BlackSquare = loadImageAtPath("graphics/black");
+    WhiteSquare = loadImageAtPath("graphics/white");
+    BluePawn = loadImageAtPath("graphics/blue");
+    RedPawn = loadImageAtPath("graphics/red");
+    RedKing = loadImageAtPath("graphics/redking");
+    BlueKing = loadImageAtPath("graphics/blueking");
+    IMGPanel = loadImageAtPath("graphics/panel");
+    IMGPlayer = loadImageAtPath("graphics/player");
+    IMGCpu = loadImageAtPath("graphics/cpu");
+    IMGPlayerWins = loadImageAtPath("graphics/playerwins");
+    IMGCpuWins = loadImageAtPath("graphics/cpuwins");
+    IMGDraw = loadImageAtPath("graphics/draw");
+	IMGConfirmQuit = loadImageAtPath("graphics/confirmquit");
 }
 
 void UnLoadGameGraphics()
@@ -55,6 +58,7 @@ void UnLoadGameGraphics()
     pd->graphics->freeBitmap(IMGPlayerWins);
     pd->graphics->freeBitmap(IMGCpuWins);
     pd->graphics->freeBitmap(IMGDraw);
+	pd->graphics->freeBitmap(IMGConfirmQuit);
 }
 
 SMove Move;
@@ -82,6 +86,7 @@ bool GameInit()
 	HumanAnotherMove=false;
 	MadeMoveList.clear();
 	CAudio_PlaySound(Sounds[SND_START],0);
+	confirmingQuit = false;
 	return true;
 }
 
@@ -101,26 +106,29 @@ void Game()
 			return;
 
 		if(Input->KeyboardPushed[SDLK_b])
-			GameState = GSTitleScreenInit;
+		{
+			if((Result == Playing) && (PlayerNr = Human))
+				confirmingQuit = !confirmingQuit;
+		}
 		
-		if(Input->KeyboardPushed[SDLK_LEFT])
+		if(!confirmingQuit && Input->KeyboardPushed[SDLK_LEFT])
 			if ((Result == Playing) && (!Selector->HasSelection))
 		    	Selector->SetPosition(Selector->GetPosition().X-1,Selector->GetPosition().Y);
 		
-		if(Input->KeyboardPushed[SDLK_RIGHT])
+		if(!confirmingQuit && Input->KeyboardPushed[SDLK_RIGHT])
 			if ((Result == Playing) && (!Selector->HasSelection))
 		    	Selector->SetPosition(Selector->GetPosition().X+1,Selector->GetPosition().Y);
 
-		if(Input->KeyboardPushed[SDLK_DOWN])
+		if(!confirmingQuit && Input->KeyboardPushed[SDLK_DOWN])
         	if ((Result == Playing) && (!Selector->HasSelection))
 		    	Selector->SetPosition(Selector->GetPosition().X,Selector->GetPosition().Y+1);
 		
-		if(Input->KeyboardPushed[SDLK_UP])
+		if(!confirmingQuit && Input->KeyboardPushed[SDLK_UP])
 			if ((Result == Playing) && (!Selector->HasSelection))
 		    	Selector->SetPosition(Selector->GetPosition().X,Selector->GetPosition().Y-1);
 
 
-		if(Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_RIGHT])
+		if(!confirmingQuit && Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_RIGHT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -259,7 +267,7 @@ void Game()
 
 			}
 
-		if(Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_LEFT])
+		if(!confirmingQuit && Input->Ready() && Input->KeyboardHeld[SDLK_UP] && Input->KeyboardHeld[SDLK_LEFT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -397,8 +405,8 @@ void Game()
 				}
 
 			}
-		
-		if(Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_LEFT])
+
+		if(!confirmingQuit && Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_LEFT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -537,7 +545,7 @@ void Game()
 
 			}
 
-		if(Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_RIGHT])
+		if(!confirmingQuit && Input->Ready() && Input->KeyboardHeld[SDLK_DOWN] && Input->KeyboardHeld[SDLK_RIGHT])
 			if(Selector->HasSelection)
 			{
 				Move.Player = PlayerNr;
@@ -678,13 +686,20 @@ void Game()
 		{
 			if (Result == Playing)
 			{
-				if (!Selector->HasSelection && ((Bord->GetBordValue(Selector->GetPosition().X,Selector->GetPosition().Y) == HumanPawn) || (Bord->GetBordValue(Selector->GetPosition().X,Selector->GetPosition().Y) == HumanKing)))
+				if (confirmingQuit)
 				{
-					CAudio_PlaySound(Sounds[SND_SELECT],0);
-					Selector->Select();
+					GameState = GSTitleScreenInit;
 				}
 				else
-					Selector->DeSelect();
+				{
+					if (!Selector->HasSelection && ((Bord->GetBordValue(Selector->GetPosition().X,Selector->GetPosition().Y) == HumanPawn) || (Bord->GetBordValue(Selector->GetPosition().X,Selector->GetPosition().Y) == HumanKing)))
+					{
+						CAudio_PlaySound(Sounds[SND_SELECT],0);
+						Selector->Select();
+					}
+					else
+						Selector->DeSelect();
+				}
 			}
 			else
 				GameState = GSTitleScreenInit;
@@ -699,6 +714,9 @@ void Game()
 			pd->graphics->drawBitmap(IMGPlayer, 245, 5, kBitmapUnflipped);
 		else
 			pd->graphics->drawBitmap(IMGCpu, 245, 5, kBitmapUnflipped);
+		if(Result == Playing)
+			if(confirmingQuit)
+				pd->graphics->drawBitmap(IMGConfirmQuit, 4, 76, kBitmapUnflipped);
 		if(Result == Draw)
 			pd->graphics->drawBitmap(IMGDraw, 4, 76, kBitmapUnflipped);
 		if(Result == PlayerWin)

@@ -91,7 +91,7 @@ extern int Sounds[NrOfSounds];
 extern vector<SMove> MadeMoveList;
 extern bool JumpHeuristicEnabled, SoundEnabled, MusicEnabled;
 extern LCDFont *font;
-extern LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw;
+extern LCDBitmap *IMGPanel,*IMGCpu,*IMGPlayer,*IMGPlayerWins,*IMGCpuWins,*IMGDraw,*IMGConfirmQuit;
 extern GameStates GameState;
 extern int Music;
 extern int Difficulty;
