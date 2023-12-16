@@ -1,0 +1,7 @@
+name=Checkers
+author=Willems Davy aka Joyrider3774
+description=A small Checkers game with 4 difficulties
+bundleID=com.joyrider3774.checkers
+version=1.0
+imagePath=metadata
+buildNumber=1
