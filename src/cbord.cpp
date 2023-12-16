@@ -205,6 +205,7 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
 					pdDelay(400-firstDelayDiff);
 				else
 					pdDelay(400);
+			}
             ApplyMove(*iter,PlaySound);
             iter++;
             if(DelayDraw && (iter != Moves.end()))
