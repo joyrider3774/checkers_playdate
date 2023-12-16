@@ -233,7 +233,7 @@ int ComputerAi::Max(CBord *Bord,int depth, int alpha, int beta)
         vector<vector<SMove> >::iterator Iter=Moves.begin();
         while (Iter != Moves.end())
         {
-            Bord->ApplyMoves(*Iter,true,false,false);
+            Bord->ApplyMoves(*Iter,true,false,false,false,0);
             Value = Min(Bord,depth-1,alpha,beta);
             Bord->UndoMoves(*Iter,false);
 
@@ -276,7 +276,7 @@ int ComputerAi::Min(CBord *Bord,int depth, int alpha, int beta)
         vector<vector<SMove> >::iterator Iter=Moves.begin();
         while (Iter != Moves.end())
         {
-            Bord->ApplyMoves(*Iter,true,false,false);
+            Bord->ApplyMoves(*Iter,true,false,false,false,0);
             Value = Max(Bord,depth-1,alpha,beta);
             Bord->UndoMoves(*Iter,false);
 
@@ -304,7 +304,7 @@ AiStatus ComputerAi::Update()
 	{
 		if ((MinMaxiter != MinMaxMoves.end()))
 		{
-			MinMaxBord->ApplyMoves(*MinMaxiter,true,false,false);
+			MinMaxBord->ApplyMoves(*MinMaxiter,true,false,false,false,0);
 
 			if (MinMaxPlayer==Computer)
 			{
@@ -334,15 +334,12 @@ AiStatus ComputerAi::Update()
 			if(MinMaxiter == MinMaxMoves.end())
 			{
 				vector<vector<SMove> >().swap(MinMaxMoves);
-					
-				MinMaxBord->ApplyMoves(MinMaxBestMove,true,true,true);
+				unsigned int MakeMoveEnd = pd->system->getCurrentTimeMilliseconds();
+				MinMaxBord->ApplyMoves(MinMaxBestMove,true,true,true,true, MakeMoveEnd - MakeMoveStart < 400 ? MakeMoveEnd - MakeMoveStart : 0);
 				for (size_t Teller=0;Teller<MinMaxBestMove.size();Teller++)
 					MadeMoveList.push_back(MinMaxBestMove[Teller]);
 				madeMove = (MinMaxBestMove.size() > 0);
 				lastStatus = AiHasResult;
-				unsigned int MakeMoveEnd = pd->system->getCurrentTimeMilliseconds();
-				if(MakeMoveEnd-MakeMoveStart < 350)
-					pdDelay(350 - (MakeMoveEnd-MakeMoveStart));
 				pd->system->logToConsole("Time Taken to calculate move: %d\n",MakeMoveEnd-MakeMoveStart);
 
 			}

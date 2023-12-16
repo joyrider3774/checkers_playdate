@@ -9,7 +9,7 @@ using namespace std;
 
 CBord::CBord()
 {
-    int X,Y;
+	int X,Y;
     for (Y=0;Y<NrOfRows;Y++)
         for (X=0;X<NrOfCols;X++)
             if((Y*(NrOfRows-1) + X)&1)
@@ -168,7 +168,7 @@ void CBord::ApplyMove(SMove &move,bool PlaySound)
     }
 }
 
-void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool PlaySound)
+void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool PlaySound, bool DelayBeforeMove, unsigned int firstDelayDiff)
 {
     vector<SMove>::iterator iter;
     vector<SMove>::reverse_iterator riter;
@@ -177,6 +177,13 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
         riter  = Moves.rbegin();
         while (riter != Moves.rend())
         {
+			if (DelayBeforeMove)
+			{
+				if(riter == Moves.rbegin())
+					pdDelay(400-firstDelayDiff);
+				else
+					pdDelay(400);
+			}
             ApplyMove(*riter,PlaySound);
             riter++;
             if(DelayDraw && (riter != Moves.rend()))
@@ -184,7 +191,6 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
 				Draw(NULL);
 				//force update screen
 				pd->graphics->display(); 
-                pdDelay(500);
             }
         }
     }
@@ -193,6 +199,12 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
         iter  = Moves.begin();
         while (iter != Moves.end())
         {
+			if (DelayBeforeMove)
+			{
+				if(iter == Moves.begin())
+					pdDelay(400-firstDelayDiff);
+				else
+					pdDelay(400);
             ApplyMove(*iter,PlaySound);
             iter++;
             if(DelayDraw && (iter != Moves.end()))
@@ -200,7 +212,6 @@ void CBord::ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool Pla
 				Draw(NULL);
 				//force update screen
 				pd->graphics->display(); 
-                pdDelay(500);
             }
         }
     }

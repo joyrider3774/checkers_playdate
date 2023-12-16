@@ -10,7 +10,7 @@ class CBord
         CBord();
         CBord(CBord *Bord);
         void ApplyMove(SMove &move,bool PlaySound);
-        void ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool PlaySound);
+        void ApplyMoves(vector<SMove> &Moves,bool reverse,bool DelayDraw,bool PlaySound, bool DelayBeforeMove, unsigned int firstDelayDiff);
         void UndoMove(SMove &Move);
         void UndoMoves(vector<SMove> &Moves,bool reverse);
         void Draw(LCDBitmap *Surface);
