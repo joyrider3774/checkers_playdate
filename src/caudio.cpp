@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "CAudio.h"
+#include "caudio.h"
 #include "pd_helperfuncs.h"
 
 #define SND_Max 100
