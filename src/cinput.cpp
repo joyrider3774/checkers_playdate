@@ -1,4 +1,4 @@
-#include "CInput.h"
+#include "cinput.h"
 
 #include "pd_api.h"
 #include "crank.h"
