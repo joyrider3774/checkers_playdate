@@ -1,0 +1,61 @@
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually ftarget the Actions tab
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { pdx: Checkers.pdx, env: playdate }
+          
+    runs-on: ubuntu-latest       
+    steps:
+      # ==== dependencies ====
+      - name: Install Make
+        run: sudo apt-get install -y make
+        
+      - name: Install CMake
+        run: sudo apt-get install -y cmake
+      
+      - name: Install  gcc-arm-none-eabi
+        run: sudo apt-get install -y gcc-arm-none-eabi     
+        
+      # ==== Build Steps ====
+      - name: Check out Sources
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Grab Playdate SDK
+        uses: wei/wget@v1
+        with:
+          args: -O PlaydateSDK-latest.tar.gz https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-latest.tar.gz
+      
+      - name: Extract Playdate SDK
+        run: |
+          tar -xvf "PlaydateSDK-latest.tar.gz"
+          rm -f "PlaydateSDK-latest.tar.gz"
+          mv PlaydateSDK-* PlaydateSDK  
+      
+      - name: Build
+        run: |
+          export PLAYDATE_SDK_PATH="$PWD/PlaydateSDK/"         
+          echo SDK Path: $PLAYDATE_SDK_PATH
+          mkdir build
+          cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=$PLAYDATE_SDK_PATH/C_API/buildsupport/arm.cmake ..
+          make
+      
+      - name: Prepare Artifact directory
+        run: |
+          mkdir output
+          mv ${{matrix.pdx}} output/
+      
+      - name: Store build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Checkers ${{matrix.env}}
+          path: output
+

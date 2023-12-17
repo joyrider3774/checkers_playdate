@@ -1,0 +1,90 @@
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually ftarget the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { sys: mingw64, env: x86_64 }
+          - { sys: mingw32, env: i686 }
+    runs-on: windows-latest    
+    steps:
+      - name: Checkout Playdate SDL2 Api Sources
+        uses: actions/checkout@v3
+        with:
+          repository: 'joyrider3774/Playdate_Api_SDL2'
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        with:
+          path: tmp
+      - name: Setup Msys
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.sys}}
+          install: >-
+            base-devel
+            mingw-w64-${{matrix.env}}-gcc
+            mingw-w64-${{matrix.env}}-SDL2             
+            mingw-w64-${{matrix.env}}-SDL2_ttf
+            mingw-w64-${{matrix.env}}-SDL2_image
+            mingw-w64-${{matrix.env}}-SDL2_mixer
+            mingw-w64-${{matrix.env}}-SDL2_gfx
+            mingw-w64-${{matrix.env}}-make
+            mingw-w64-${{matrix.env}}-harfbuzz
+            mingw-w64-${{matrix.env}}-freetype
+            mingw-w64-${{matrix.env}}-libwebp
+            mingw-w64-${{matrix.env}}-libtiff
+      - name: move things to correct directories
+        shell: msys2 {0}
+        run: |
+          rm -rf ./src/srcgame
+          rm -rf ./Source
+          mv tmp/Source ./Source
+          mv tmp/src ./src/srcgame                
+      - name: Build Game
+        shell: msys2 {0}
+        run: |
+          make CPP_BUILD=1
+      - name: Copy dll libraries
+        shell: msys2 {0}
+        run: |
+          cp /${{matrix.sys}}/bin/libbrotli*.dll Source/
+          cp /${{matrix.sys}}/bin/libbz*.dll Source/
+          cp /${{matrix.sys}}/bin/libdeflate*.dll Source/
+          cp /${{matrix.sys}}/bin/libdeflate*.dll Source/
+          cp /${{matrix.sys}}/bin/libfreetype*.dll Source/
+          cp /${{matrix.sys}}/bin/libgcc*.dll Source/
+          cp /${{matrix.sys}}/bin/libglib*.dll Source/
+          cp /${{matrix.sys}}/bin/libgraphite*.dll Source/        
+          cp /${{matrix.sys}}/bin/libharfbuzz*.dll Source/
+          cp /${{matrix.sys}}/bin/libhwy*.dll Source/
+          cp /${{matrix.sys}}/bin/libiconv*.dll Source/
+          cp /${{matrix.sys}}/bin/libintl*.dll Source/
+          cp /${{matrix.sys}}/bin/libjbig*.dll Source/
+          cp /${{matrix.sys}}/bin/libjpeg*.dll Source/
+          cp /${{matrix.sys}}/bin/libjxl*.dll Source/
+          cp /${{matrix.sys}}/bin/liblcms*.dll Source/
+          cp /${{matrix.sys}}/bin/libLerc*.dll Source/
+          cp /${{matrix.sys}}/bin/liblzma*.dll Source/
+          cp /${{matrix.sys}}/bin/libmpg123*.dll Source/
+          cp /${{matrix.sys}}/bin/libogg*.dll Source/
+          cp /${{matrix.sys}}/bin/libopus*.dll Source/
+          cp /${{matrix.sys}}/bin/libpcre*.dll Source/
+          cp /${{matrix.sys}}/bin/libpng*.dll Source/          
+          cp /${{matrix.sys}}/bin/libstdc*.dll Source/
+          cp /${{matrix.sys}}/bin/libtiff*.dll Source/
+          cp /${{matrix.sys}}/bin/libwebp*.dll Source/
+          cp /${{matrix.sys}}/bin/libzstd*.dll Source/
+          cp /${{matrix.sys}}/bin/zlib*.dll Source/
+          cp /${{matrix.sys}}/bin/libSDL2*.dll Source/
+          cp /${{matrix.sys}}/bin/SDL2*.dll Source/
+          cp /${{matrix.sys}}/bin/libsharpyuv*.dll Source/
+          cp /${{matrix.sys}}/bin/libwinpthread*.dll Source/
+      - name: Store build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Checkers ${{ matrix.env }}
+          path: Source/
