@@ -340,7 +340,7 @@ AiStatus ComputerAi::Update()
 					MadeMoveList.push_back(MinMaxBestMove[Teller]);
 				madeMove = (MinMaxBestMove.size() > 0);
 				lastStatus = AiHasResult;
-				pd->system->logToConsole("Time Taken to calculate move: %d\n",MakeMoveEnd-MakeMoveStart);
+				//pd->system->logToConsole("Time Taken to calculate move: %d\n",MakeMoveEnd-MakeMoveStart);
 
 			}
 		}
