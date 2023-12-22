@@ -87,6 +87,7 @@ bool GameInit()
 	MadeMoveList.clear();
 	CAudio_PlaySound(Sounds[SND_START],0);
 	confirmingQuit = false;
+	pd->graphics->setBackgroundColor(kColorBlack);
 	return true;
 }
 

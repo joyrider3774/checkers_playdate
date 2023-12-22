@@ -9,6 +9,7 @@ CMainMenu *Menu;
 bool TitleScreenInit()
 {
 	Menu = new CMainMenu();
+	pd->graphics->setBackgroundColor(kColorWhite);
 	return true;
 }
 
