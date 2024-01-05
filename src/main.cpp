@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <cstring>
 #include <time.h>
 #ifndef SDL2API
 #include <pdcpp/pdnewlib.h>
@@ -45,8 +46,19 @@ void UnloadSounds()
 		CAudio_UnLoadSound(Sounds[Teller]);
 }
 
+void resetGlobals()
+{
+	JumpHeuristicEnabled=false, SoundEnabled=true, MusicEnabled=true;
+	GameState = GSTitleScreenInit;
+	Difficulty = Hard;
+	FrameTime = 0;
+	Frames = 0; 
+	CurrentMs = 0;
+}
+
 void setupGame()
 {
+	resetGlobals();
 	CAudio_Init(false, 5.0f);
 	Input = new CInput(pd, CINPUTDELAY);
 	font = loadFontAtPath("fonts/font");
@@ -57,11 +69,29 @@ void setupGame()
 	CAudio_PlayMusic(Music, -1);
 }
 
-void destroyGame()
+void TerminateGame()
 {
 	SaveSettings();
 	UnloadSounds();
 	CAudio_DeInit();
+	delete Input;
+	switch (GameState)
+	{
+		case GSGame:
+			GameDeInit();
+			break;
+		case GSTitleScreen:
+			TitleScreenDeInit();
+			break;
+		case GSOptions:
+			OptionsDeInit();
+			break;
+		case GSCredits:
+			CreditsDeInit();
+			break;
+		default:
+			break;
+	}
 }
 
 static int mainLoop(void* ud)
@@ -136,7 +166,7 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 
 	if (event == kEventTerminate)
 	{
-		destroyGame();
+		TerminateGame();
 	}
 	return 0;
 }

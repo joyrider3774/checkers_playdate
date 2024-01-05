@@ -73,6 +73,14 @@ int PlayerNr;
 size_t StartFor;
 bool HumanAnotherMove=false;
 
+void GameDeInit()
+{
+	UnLoadGameGraphics();
+	delete Selector;
+	delete Ai;
+	delete Bord;
+}
+
 bool GameInit()
 {
 	LoadGameGraphics();
@@ -814,9 +822,6 @@ void Game()
 	}
 	if(GameState != GSGame)
 	{
-		UnLoadGameGraphics();
-		delete Selector;
-		delete Ai;
-		delete Bord;
+		GameDeInit();
 	}
 }

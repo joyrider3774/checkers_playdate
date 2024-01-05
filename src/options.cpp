@@ -28,6 +28,11 @@ void ApplyOptions()
 	SaveSettings();
 }
 
+void OptionsDeInit()
+{
+	delete OptionsMenu;
+}
+
 bool OptionsInit()
 {
 	OptionsMenu = new COptionMenu(Difficulty,JumpHeuristicEnabled, MusicEnabled, SoundEnabled);
@@ -76,6 +81,6 @@ void Options()
 	
 	if((GameState != GSOptions) && (GameState != GSOptionsInit))
 	{
-    	delete OptionsMenu;
+    	OptionsDeInit();
 	}
 }

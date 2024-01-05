@@ -2,5 +2,6 @@
 #define GAME_H
 
 void Game();
+void GameDeInit();
 
 #endif 

@@ -2,5 +2,6 @@
 #define OPTIONS_H
 
 void Options();
+void OptionsDeInit();
 
 #endif

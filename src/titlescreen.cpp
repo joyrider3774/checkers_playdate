@@ -6,6 +6,11 @@
 
 CMainMenu *Menu;
 
+void TitleScreenDeInit()
+{
+	delete Menu;
+}
+
 bool TitleScreenInit()
 {
 	Menu = new CMainMenu();
@@ -52,5 +57,5 @@ void TitleScreen()
     }
 
 	if ((GameState != GSTitleScreen) && (GameState != GSTitleScreenInit))
-    	delete Menu;
+    	TitleScreenDeInit();
 }

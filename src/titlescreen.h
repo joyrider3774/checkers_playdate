@@ -2,5 +2,6 @@
 #define TITLESCREEN_H
 
 void TitleScreen();
+void TitleScreenDeInit();
 
 #endif
