@@ -57,30 +57,30 @@ void CMainMenu::Draw(LCDBitmap *Surface)
 
     if (Selection == 1)
     {
-        pd->graphics->drawBitmap(IMGPlay1, 100, 62, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGPlay1, 140, 62, kBitmapUnflipped);
     }
     else
     {
-        pd->graphics->drawBitmap(IMGPlay2, 100, 62, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGPlay2, 140, 62, kBitmapUnflipped);
     }
 
     if (Selection == 2)
     {
-        pd->graphics->drawBitmap(IMGOptions1, 100, 107, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGOptions1, 140, 107, kBitmapUnflipped);
 	}
     else
     {
-        pd->graphics->drawBitmap(IMGOptions2, 100, 107, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGOptions2, 140, 107, kBitmapUnflipped);
     }
 
 
     if (Selection == 3) // = quit draw purple
     {
-        pd->graphics->drawBitmap(IMGCredits1, 100, 150, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGCredits1, 140, 150, kBitmapUnflipped);
     }
     else // draw blue
     {
-        pd->graphics->drawBitmap(IMGCredits2, 100, 150, kBitmapUnflipped);
+        pd->graphics->drawBitmap(IMGCredits2, 140, 150, kBitmapUnflipped);
     }
 
 }

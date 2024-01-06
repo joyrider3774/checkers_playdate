@@ -8,6 +8,7 @@ CMainMenu *Menu;
 
 void TitleScreenDeInit()
 {
+	pd->graphics->setDrawOffset(40, 0);
 	delete Menu;
 }
 
@@ -52,6 +53,7 @@ void TitleScreen()
 					break;
             }
 		}
+		pd->graphics->setDrawOffset(0, 0);
 		pd->graphics->clear(kColorWhite);
         Menu->Draw(NULL);
     }

@@ -133,28 +133,28 @@ void COptionMenu::Draw(LCDBitmap *Surface)
 {
     // draw the title screen background
     pd->graphics->drawBitmap(IMGTitleScreen, 0, 0, kBitmapUnflipped);
-	const int starty = 50, yspacing = 30;
+	const int starty = 50, yspacing = 30, startx = 80;
 
     if (Selection == 1)
     {
         if(OptionJump)
         {
-            pd->graphics->drawBitmap(IMGJumpEnabled1, 40, starty, kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGJumpEnabled1, startx, starty, kBitmapUnflipped);
         }
         else
         {
-			pd->graphics->drawBitmap(IMGJumpDisabled1, 40, starty, kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGJumpDisabled1, startx, starty, kBitmapUnflipped);
         }
     }
     else
     {
         if(OptionJump)
         {
-			pd->graphics->drawBitmap(IMGJumpEnabled2, 40, starty, kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGJumpEnabled2, startx, starty, kBitmapUnflipped);
         }
         else
         {
-            pd->graphics->drawBitmap(IMGJumpDisabled2, 40, starty, kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGJumpDisabled2, startx, starty, kBitmapUnflipped);
         }
     }
 
@@ -163,16 +163,16 @@ void COptionMenu::Draw(LCDBitmap *Surface)
         switch(OptionDifficulty)
         {
             case VeryEasy:
-                pd->graphics->drawBitmap(IMGVeryEasy1, 40, starty + (1 * yspacing) + 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGVeryEasy1, startx, starty + (1 * yspacing) + 4, kBitmapUnflipped);
                 break;
             case Easy:
-				pd->graphics->drawBitmap(IMGEasy1, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGEasy1, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
 				break;
             case Hard:
-                pd->graphics->drawBitmap(IMGHard1, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGHard1, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
                 break;
             case VeryHard:
-                pd->graphics->drawBitmap(IMGVeryHard1, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGVeryHard1, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
                 break;
         }
     }
@@ -181,16 +181,16 @@ void COptionMenu::Draw(LCDBitmap *Surface)
         switch(OptionDifficulty)
         {
    			case VeryEasy:
-                pd->graphics->drawBitmap(IMGVeryEasy2, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGVeryEasy2, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
                 break;
             case Easy:
-				pd->graphics->drawBitmap(IMGEasy2, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+				pd->graphics->drawBitmap(IMGEasy2, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
 				break;
             case Hard:
-                pd->graphics->drawBitmap(IMGHard2, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGHard2, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
                 break;
             case VeryHard:
-                pd->graphics->drawBitmap(IMGVeryHard2, 40, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
+                pd->graphics->drawBitmap(IMGVeryHard2, startx, starty + (1 * yspacing)+ 4, kBitmapUnflipped);
                 break;
         }
     }
@@ -199,22 +199,22 @@ void COptionMenu::Draw(LCDBitmap *Surface)
     {
         if(OptionMusic)
         {
-            pd->graphics->drawBitmap(IMGMusicEnabled1, 40, starty + (2 * yspacing), kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGMusicEnabled1, startx, starty + (2 * yspacing), kBitmapUnflipped);
         }
         else
         {
-			pd->graphics->drawBitmap(IMGMusicDisabled1, 40, starty + (2 * yspacing), kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGMusicDisabled1, startx, starty + (2 * yspacing), kBitmapUnflipped);
         }
     }
     else
     {
         if(OptionMusic)
         {
-			pd->graphics->drawBitmap(IMGMusicEnabled2, 40, starty + (2 * yspacing), kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGMusicEnabled2, startx, starty + (2 * yspacing), kBitmapUnflipped);
         }
         else
         {
-            pd->graphics->drawBitmap(IMGMusicDisabled2, 40, starty + (2 * yspacing), kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGMusicDisabled2, startx, starty + (2 * yspacing), kBitmapUnflipped);
         }
     }
 
@@ -223,22 +223,22 @@ void COptionMenu::Draw(LCDBitmap *Surface)
     {
         if(OptionSound)
         {
-            pd->graphics->drawBitmap(IMGSoundEnabled1, 40, starty + (3 * yspacing), kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGSoundEnabled1, startx, starty + (3 * yspacing), kBitmapUnflipped);
         }
         else
         {
-			pd->graphics->drawBitmap(IMGSoundDisabled1, 40, starty + (3 * yspacing), kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGSoundDisabled1, startx, starty + (3 * yspacing), kBitmapUnflipped);
         }
     }
     else
     {
         if(OptionSound)
         {
-			pd->graphics->drawBitmap(IMGSoundEnabled2, 40, starty + (3 * yspacing), kBitmapUnflipped);
+			pd->graphics->drawBitmap(IMGSoundEnabled2, startx, starty + (3 * yspacing), kBitmapUnflipped);
         }
         else
         {
-            pd->graphics->drawBitmap(IMGSoundDisabled2, 40, starty + (3 * yspacing), kBitmapUnflipped);
+            pd->graphics->drawBitmap(IMGSoundDisabled2, startx, starty + (3 * yspacing), kBitmapUnflipped);
         }
     }
 }

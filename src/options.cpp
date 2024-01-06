@@ -1,4 +1,5 @@
 #include <pd_api.h>
+#include "pd_helperfuncs.h"
 #include "options.h"
 #include "common.h"
 #include "coptionmenu.h"
@@ -30,6 +31,7 @@ void ApplyOptions()
 
 void OptionsDeInit()
 {
+	pd->graphics->setDrawOffset(40, 0);
 	delete OptionsMenu;
 }
 
@@ -76,6 +78,7 @@ void Options()
 			GameState = GSTitleScreenInit;
 		}
 
+		pd->graphics->setDrawOffset(0, 0);
 		OptionsMenu->Draw(NULL);
     }
 	

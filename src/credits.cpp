@@ -9,8 +9,8 @@ LCDBitmap *IMGCredits, *IMGTitleScreen;
 void CreditsDeInit()
 {
 	pd->graphics->clear(kColorWhite);
-	pd->graphics->setDrawOffset(40, 0);	
 	pd->graphics->drawBitmap(IMGTitleScreen, 0, 0, kBitmapUnflipped);
+	pd->graphics->setDrawOffset(40, 0);	
 	pd->graphics->freeBitmap(IMGCredits);
 	pd->graphics->freeBitmap(IMGTitleScreen);
 }
