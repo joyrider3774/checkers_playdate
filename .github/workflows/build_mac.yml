@@ -39,7 +39,7 @@ jobs:
 
       - name: Build Game        
         run: |
-          make CPP_BUILD=1
+          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
 
       - name: run dylibbundler
         run: |
