@@ -19,7 +19,7 @@ jobs:
       - name: Checkout Playdate SDL2 Api Sources
         uses: actions/checkout@v3
         with:
-          repository: 'joyrider3774/Playdate_Api_SDL2' WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
+          repository: 'joyrider3774/Playdate_Api_SDL2'
 
       - name: Checkout sources
         uses: actions/checkout@v3
@@ -47,7 +47,7 @@ jobs:
       - name: Build Game        
         run: |
           source ./emsdk/emsdk_env.sh
-          emmake make CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1
+          emmake make CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
 
       - name: Store build
         uses: actions/upload-artifact@v3
