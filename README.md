@@ -31,6 +31,12 @@ If your turn is over the AI / CPU Player will start thinking about it's move and
 - Very hard CPU player on Playdate can think a while before it takes it move.
 - Easy and Very easy CPU Player may repeat moves near the end of the game.
 
+
+## Play version with colored graphics
+The windows, mac, (self build) linux and html (web assembly) versions can switch out the default playdate graphics with colored graphics if you press the F3 button on the keyboard or the X Button on your (xbox) gamepad. 
+The game will restart with the next source folder and remember which source folder you are using the next time you start the game.
+
+
 ## Controls
 
 ### Playdate 
@@ -46,8 +52,9 @@ If your turn is over the AI / CPU Player will start thinking about it's move and
 | Arrow keys | Select menu's and options. Move the selector on the board. When a piece is selected, diagonals dictate the move |
 | X | Confirm in menu's, Selecting a piece on the board|
 | C | Back in menus and game |
-| F	| Switch between fullscreen & windowed mode |
-| F4| Quit game |
+| F | Switch between fullscreen & windowed mode |
+| F3 | Switch Source Folders (switch between playdate and colored graphics) |
+| F4 | Quit game |
 
 ### Game pad Windows / Mac / Browser
 | Button | Action |
@@ -55,6 +62,7 @@ If your turn is over the AI / CPU Player will start thinking about it's move and
 | dpad & joystick | Select menu's and options. Move the selector on the board. When a piece is selected, diagonals dictate the move |
 | A | Confirm in menu's, Selecting a piece on the board|
 | B | Back in menus and game |
+| X Button | Switch Source Folders (switch between playdate and colored graphics) |
 
 ## Credits
 - Checkers for Playdate (and gp2x) is created by Willems Davy.
