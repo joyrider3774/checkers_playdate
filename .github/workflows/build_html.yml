@@ -19,7 +19,7 @@ jobs:
       - name: Checkout Playdate SDL2 Api Sources
         uses: actions/checkout@v3
         with:
-          repository: 'joyrider3774/Playdate_Api_SDL2'
+          repository: 'joyrider3774/Playdate_Api_SDL2' WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
 
       - name: Checkout sources
         uses: actions/checkout@v3

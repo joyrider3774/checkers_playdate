@@ -39,6 +39,10 @@ jobs:
           rm -f "PlaydateSDK-latest.tar.gz"
           mv PlaydateSDK-* PlaydateSDK  
       
+      - name: remove alternate Source folder
+        run: |
+          rm -rf Source/Source1
+
       - name: Build
         run: |
           export PLAYDATE_SDK_PATH="$PWD/PlaydateSDK/"         

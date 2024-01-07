@@ -47,7 +47,7 @@ jobs:
       - name: Build Game
         shell: msys2 {0}
         run: |
-          make CPP_BUILD=1
+          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
       - name: Copy dll libraries
         shell: msys2 {0}
         run: |
