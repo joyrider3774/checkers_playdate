@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Checkers
+Comment=Checkers is the well known board game with four difficulties and a jump heuristic.
+Categories=Game;BoardGame;
+
+Icon=io.github.joyrider3774.checkers_playdate
+Exec=checkers_playdate
+Terminal=false

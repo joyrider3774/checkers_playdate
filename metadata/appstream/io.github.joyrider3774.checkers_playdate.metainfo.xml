@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.joyrider3774.checkers_playdate</id>
+  
+  <name>Checkers</name>
+  <summary>Checkers is the well known board game with four difficulties and a jump heuristic.</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>gamepad</control>
+  </supports>
+  
+  <description>
+    <p>
+      Checkers is the well known board game with four difficulties and a jump heuristic. This version is port of my gp2x version made to work with the Playdate handheld and then ported back to SDL2 using a playdate SDK reimplementation.
+    </p>
+    <p>
+      You are the white player playing against the black player, and start on the bottom of the screen, you can move the selector around with the dpad / arrow keys and select pieces with the (A) button or (X) key. Once a piece is selected it will display the valid moves it can do and you can do the move by selecting the diagonal direction you want your piece to go using the dpad. If your turn is over the AI / CPU Player will start thinking about it&apos;s move and make the move.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">io.github.joyrider3774.checkers_playdate.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/joyrider3774/checkers_playdate/main/metadata/screenshots/Checkers-screenshot5.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/joyrider3774/checkers_playdate/main/metadata/screenshots/Checkers-screenshot4.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/joyrider3774/checkers_playdate/main/metadata/screenshots/Checkers-screenshot1.png</image>
+    </screenshot>
+  </screenshots>
+</component>
