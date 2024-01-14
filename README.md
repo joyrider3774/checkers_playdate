@@ -39,7 +39,8 @@ The game will restart with the next source folder and remember which source fold
 
 ## Controls
 
-### Playdate 
+### Playdate
+
 | Button | Action |
 | ------ | ------ |
 | Dpad | Select menu's and options. Move the selector on the board. When a piece is selected, diagonals dictate the move |
@@ -47,6 +48,7 @@ The game will restart with the next source folder and remember which source fold
 | B | Back in menus and game |
 
 ### Keyboard Windows / Mac / Browser
+
 | Button | Action |
 | ------ | ------ |
 | Arrow keys | Select menu's and options. Move the selector on the board. When a piece is selected, diagonals dictate the move |
@@ -57,6 +59,7 @@ The game will restart with the next source folder and remember which source fold
 | F4 | Quit game |
 
 ### Game pad Windows / Mac / Browser
+
 | Button | Action |
 | ------ | ------ |
 | dpad & joystick | Select menu's and options. Move the selector on the board. When a piece is selected, diagonals dictate the move |
