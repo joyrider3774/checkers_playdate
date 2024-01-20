@@ -1,0 +1,8 @@
+{
+"package":"io.github.joyrider3774.checkers",
+"label":"Checkers",
+"icon":"icon.png",
+"iconsel":"icon.png",
+"launch":"launch.sh",
+"description":"Checkers Playdate Created by Joyrider3774"
+}
