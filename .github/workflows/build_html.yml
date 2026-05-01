@@ -47,7 +47,7 @@ jobs:
       - name: Build Game        
         run: |
           source ./emsdk/emsdk_env.sh
-          emmake make PLATFORM=emscripten CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1 EMSCRIPTEN_MEMORY_SIZE=786432000 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
+          emmake make PLATFORM=emscripten CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1 EMSCRIPTEN_MEMORY_SIZE=786432000 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240 SCALINGMODE=0
 
       - name: Store build
         uses: actions/upload-artifact@v7
