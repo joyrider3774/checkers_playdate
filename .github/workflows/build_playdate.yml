@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - { pdx: Checkers.pdx, env: playdate }
+          - {artiface_name: Checkers, pdx: Checkers_DEVICE.pdx, output-pdx: Checkers.pdx, env: playdate }
           
     runs-on: ubuntu-latest       
     steps:
@@ -24,7 +24,7 @@ jobs:
         
       # ==== Build Steps ====
       - name: Check out Sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -55,11 +55,11 @@ jobs:
       - name: Prepare Artifact directory
         run: |
           mkdir output
-          mv ${{matrix.pdx}} output/
+          mv ${{matrix.pdx}} output/${{matrix.output-pdx}}
       
       - name: Store build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
-          name: Checkers ${{matrix.env}}
+          name: ${{matrix.artiface_name}} ${{matrix.env}}
           path: output
 

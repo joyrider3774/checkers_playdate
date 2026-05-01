@@ -17,17 +17,17 @@ jobs:
           sudo apt-get install ffmpeg
           
       - name: Checkout Playdate SDL2 Api Sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: 'joyrider3774/Playdate_Api_SDL2'
 
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: tmp
         
       - name: Checkout EMSDK sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: emsdk
           repository: 'emscripten-core/emsdk'
@@ -47,10 +47,10 @@ jobs:
       - name: Build Game        
         run: |
           source ./emsdk/emsdk_env.sh
-          emmake make CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
+          emmake make PLATFORM=emscripten CPP_BUILD=1 EMSCRIPTEN_BUILD=1 EMSCRIPTEN_ASYNCIFY=1 EMSCRIPTEN_MEMORY_SIZE=786432000 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
 
       - name: Store build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: ${{env.ARTIFACT_NAME}}
           path: html

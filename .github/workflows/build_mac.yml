@@ -13,33 +13,32 @@ env:
 
 jobs:
   build:
-    runs-on: macos-12    
+    runs-on: macos-15-intel   
     steps:
       - name: Checkout Playdate SDL2 Api Sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: 'joyrider3774/Playdate_Api_SDL2'
-
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: tmp
         
       - name: Setup homebrew stuff
         run: |
           brew update
-          brew install --ignore-dependencies portaudio fluid-synth libxmp gettext glib libavif jpeg-turbo jpeg-xl libavif libpng libtiff webp
-          brew install --ignore-dependencies SDL2 SDL2_Mixer SDL2_Image SDL2_ttf SDL2_gfx dylibbundler
-       
+          brew install portaudio libxmp gettext glib libavif jpeg-turbo jpeg-xl libavif libpng libtiff webp
+          brew install SDL2 SDL2_Mixer SDL2_Image SDL2_ttf SDL2_gfx dylibbundler
+
       - name: move things to correct directories
         run: |
           rm -rf ./src/srcgame
           mv tmp/src ./src/srcgame
           cp -Rf tmp/Source/. ./Source
 
-      - name: Build Game        
+      - name: Build Game
         run: |
-          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
+          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240 WINDOWSCALE=2
 
       - name: run dylibbundler
         run: |
@@ -104,7 +103,7 @@ jobs:
           mv  "$ARTIFACT_NAME.tar.gz" ./artifact/
 
       - name: Store build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: ${{env.ARTIFACT_NAME}}
           path: artifact

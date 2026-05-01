@@ -9,15 +9,15 @@ jobs:
       matrix:
         include:
           - { sys: mingw64, env: x86_64 }
-          - { sys: mingw32, env: i686 }
+         # - { sys: mingw32, env: i686 }
     runs-on: windows-latest    
     steps:
       - name: Checkout Playdate SDL2 Api Sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           repository: 'joyrider3774/Playdate_Api_SDL2'
       - name: Checkout sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           path: tmp
       - name: Setup Msys
@@ -25,7 +25,10 @@ jobs:
         with:
           msystem: ${{matrix.sys}}
           install: >-
+            unzip
+            wget
             base-devel
+            mingw-w64-${{matrix.env}}-curl
             mingw-w64-${{matrix.env}}-gcc
             mingw-w64-${{matrix.env}}-SDL2             
             mingw-w64-${{matrix.env}}-SDL2_ttf
@@ -37,17 +40,17 @@ jobs:
             mingw-w64-${{matrix.env}}-freetype
             mingw-w64-${{matrix.env}}-libwebp
             mingw-w64-${{matrix.env}}-libtiff
+      
       - name: move things to correct directories
         shell: msys2 {0}
         run: |
           rm -rf ./src/srcgame
-          rm -rf ./Source
-          mv tmp/Source ./Source
-          mv tmp/src ./src/srcgame                
+          mv tmp/src ./src/srcgame
+          cp -Rf tmp/Source/. ./Source
       - name: Build Game
         shell: msys2 {0}
         run: |
-          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240
+          make CPP_BUILD=1 WINDOWSCALE=2 SCREENRESX=320 SCREENRESY=240 LDUSEX11=0
       - name: Copy dll libraries
         shell: msys2 {0}
         run: |
@@ -83,8 +86,19 @@ jobs:
           cp /${{matrix.sys}}/bin/SDL2*.dll Source/
           cp /${{matrix.sys}}/bin/libsharpyuv*.dll Source/
           cp /${{matrix.sys}}/bin/libwinpthread*.dll Source/
+          cp /${{matrix.sys}}/bin/libavif-*.dll Source/
+          cp /${{matrix.sys}}/bin/libFLAC.dll Source/
+          cp /${{matrix.sys}}/bin/libvorbisfile-*.dll Source/
+          cp /${{matrix.sys}}/bin/libwavpack-*.dll Source/
+          cp /${{matrix.sys}}/bin/libxmp.dll Source/
+          cp /${{matrix.sys}}/bin/libaom.dll Source/
+          cp /${{matrix.sys}}/bin/libdav1d-*.dll Source/
+          cp /${{matrix.sys}}/bin/librav1*.dll Source/
+          cp /${{matrix.sys}}/bin/libSvtAv1Enc-*.dll Source/
+          cp /${{matrix.sys}}/bin/libyuv.dll Source/
+          cp /${{matrix.sys}}/bin/libvorbis-*.dll Source/
       - name: Store build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
-          name: Checkers ${{ matrix.env }}
+          name: Checkers Windows ${{ matrix.env }}
           path: Source/
